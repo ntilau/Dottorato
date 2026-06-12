@@ -1,38 +1,51 @@
-# Univ-Doctorate
+# PhD Dissertation: Contributions to Finite Element Analysis in Electromagnetics
 
-LaTeX sources for a Doctorate's dissertation and its defense presentation.
+LaTeX sources for a PhD dissertation ("Contributions to the Art of Finite Element
+Analysis in Electromagnetics", University of Florence, 2011–2013) and its defense
+presentation. Also includes annual progress reports, conference talks, and an
+external seminar handout.
 
 ## Repository Layout
 
 ```
-manuscript/            Main dissertation document
-├── dissertation.tex   Entry point (includes all chapters via \include)
-├── title.tex          Title page
-├── abstract.tex       Abstract
-├── acknowledgements.tex
-├── introduction.tex
-├── chapter1.tex       Content chapters
-├── chapter2.tex
-├── chapter3.tex
-├── conclusion.tex
-├── bibliography.tex   Bibliography definitions
-├── custom.tex         Custom commands and package configuration
-├── img/               Images organized by chapter
-│   ├── ch1/           Chapter 1 figures (PDF)
-│   ├── ch2/           Chapter 2 figures (PDF)
-│   ├── ch3/           Chapter 3 figures (PDF)
-│   └── *.pdf          Logos and shared resources
-└── [dissertation.pdf](manuscript/dissertation.pdf) Generated output
+manuscript/                    Main dissertation document
+├── dissertation.tex           Entry point (\documentclass{book})
+├── title.tex                  Title page
+├── pub.tex                    List of publications
+├── abs.tex                    Italian + English abstract
+├── ack.tex                    Acknowledgments
+├── intro.tex                  Introduction
+├── ch1.tex                    Finite elements for the wave equation
+├── ch2.tex                    Domain decomposition methods
+├── ch3.tex                    Nonlinear analysis (harmonic balance FE)
+├── concl.tex                  Conclusion
+├── dissertation.bib           Bibliography (BibLaTeX, biber)
+├── cover/                     Cover page files
+├── img/                       Figures by chapter
+│   ├── ch1/
+│   ├── ch2/
+│   └── ch3/
+├── reviews/                   Review comments
+└── [dissertation.pdf]         Generated output
 
-presentation/        Defense presentation (Beamer slides)
-├── defense.tex      Entry point for Beamer
-├── custom.tex       Beamer theme and package customization
-├── img/             Presentation images and diagrams
-└── [defense.pdf](presentation/defense.pdf) Generated output
+presentation/                 Defense Beamer presentation
+├── defense.tex               Entry point
+├── custom.tex                Theme and package config
+├── img/                      Slide images and diagrams
+└── [defense.pdf]             Generated output
 
-Makefile             Build orchestration (supports make all, manuscript, presentation, clean, distclean, help)
-README.md            This file
-configure            Automated dependency installer script
+notes/                        Supplementary PDFs (split from merged archive)
+├── 01_Dissertation_Manuscript.pdf    Full dissertation (144 pp)
+├── 02_PhD_Defense_Presentation.pdf   Defense slides (104 pp)
+├── 03_Yearly_Reports.pdf             1st–3rd year reports (46 pp)
+├── 04_CEM_Seminar.pdf                Prof. J.F. Lee CEM seminar (85 pp)
+└── 05_MBDA.pdf                       MBDA presentation scans (10 pp)
+
+archives/                     ZIP bundles of published/submitted papers
+drafts/                       Earlier works (MEng thesis, journal articles)
+Makefile                      Build orchestration
+README.md                     This file
+configure                     Automated dependency installer
 ```
 
 ## Requirements
@@ -153,12 +166,14 @@ The main dissertation file (`manuscript/dissertation.tex`) uses `\include` comma
 
 ```latex
 \include{title}
-\include{abstract}
-\include{introduction}
-\include{chapter1}
-\include{chapter2}
-\include{chapter3}
-\include{conclusion}
+\include{abs}
+\include{ack}
+\include{pub}
+\include{intro}
+\include{ch1}
+\include{ch2}
+\include{ch3}
+\include{concl}
 ```
 
 This modular structure allows:
