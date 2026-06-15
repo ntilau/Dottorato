@@ -1,0 +1,23 @@
+\chapter{Conclusione}
+
+In questo lavoro è stato presentato lo stato dell'arte dei controllori a frequenza variabile per impianti industriali motorizzati, con particolare attenzione alle problematiche di compatibilità elettromagnetica ad essi associate.
+
+Nel \hyperref[ch:controllori]{Capitolo~2} sono stati discussi il principio di funzionamento dei motori elettrici e dei convertitori di frequenza (VFD/ASD), evidenziando come la tecnologia degli interruttori a semiconduttore (IGBT, GTO, IGCT) alla base dei moderni VFD, pur offrendo notevoli vantaggi in termini di efficienza energetica e flessibilità di controllo, introduce significative sorgenti di disturbo elettromagnetico.
+
+Nel \hyperref[ch:emissioni]{Capitolo~3} sono state analizzate in dettaglio le fonti di EMI, con particolare enfasi sul ruolo della corrente di modo comune $I_{\lg}$ come principale responsabile delle interferenze. I meccanismi di accoppiamento (condotto, capacitivo, radiativo) sono stati discussi, evidenziando la complessità del problema e la molteplicità dei percorsi di disturbo.
+
+Le tecniche di mitigazione presentate comprendono:
+
+\begin{itemize}
+\item filtri e \textit{choke} per, rispettivamente, deviare ed attenuare la corrente di modo comune;
+\item ulteriori tecniche di mitigazione quali l'impiego di isolatori galvanici od ottici per le linee di segnale informativo ed ulteriori protezioni per gli apparati molto sensibili (aumento del CMRR, l'impiego di codifiche di correzione a posteriori (FEC), ecc.).
+\end{itemize}
+
+Il controllo delle emissioni per ottenere un impianto elettromagneticamente compatibile si esegue sostanzialmente con un controllo della corrente di modo comune, minimizzandone prima la generazione, poi controllandone le rotte ed i percorsi di accoppiamento.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{emc_plan}
+\caption{Requisiti di compatibilità elettromagnetica dichiarati nella direttiva europea EN\,61800-3~\cite{en61800}.}
+\label{fig:emc_plan}
+\end{figure}

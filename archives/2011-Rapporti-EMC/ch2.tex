@@ -1,0 +1,310 @@
+\chapter{Emissioni nei Moderni Controllori PWM}
+\label{ch:emissioni}
+
+L'articolo di rassegna \textit{EMI Emissions of Modern PWM ac Drives}~\cite{skibinski1999} presenta una panoramica delle problematiche EMI e linee guida pre- e post-installazione di controllori VFD (\textit{Variable Frequency Drive}) o VSDS (\textit{Variable Speed Drive System}). Gli argomenti trattati rappresentano un punto di riferimento nel progetto di impianti industriali costituiti da motori controllati in frequenza mediante ASD (\textit{Adjustable Speed Drive})\footnote{Sinonimo di VFD o VSDS.}. In particolare, l'articolo evidenzia le principali fonti di interferenza elettromagnetica o EMI, i vari meccanismi di accoppiamento del rumore con i dispositivi sensibili e i suoi effetti, alcune tecniche di riduzione dell'EMI, la modellizzazione dell'EMI, gli standards per la compatibilità elettromagnetica, ed infine, alcuni metodi di misura dell'EMI. La stesura di questo capitolo si avvarrà quindi delle conoscenze riportate nell'articolo per approfondire le problematiche di compatibilità elettromagnetica negli impianti con controllori a frequenza variabile.
+
+La situazione che viene analizzata è quella della cascata di un trasformatore trifase triangolo-stella, seguito da un'ASD ed infine un motore trifase. L'ASD è costituito da un raddrizzatore, che converte quindi la tensione alternata di rete in una differenza di potenziale relativamente costante $V_{bus}$, e da un ponte di interruttori a semiconduttore opportunamente controllati da una logica per generare le forme d'onda PWM.
+
+La principale fonte di EMI, il rumore di modo comune, è un segnale di disturbo che viene indotto sulle linee di segnale rispetto ad una massa/terra. Come discusso nel Capitolo~1, i problemi di compatibilità implicano una sorgente di rumore, un mezzo di accoppiamento e dei circuiti/apparati suscettibili di subire un'interferenza per una data ampiezza, frequenza, periodo di ripetizione del rumore impresso.
+
+I problemi associati al rumore di modo comune aumentano notevolmente col numero di apparati suscettibili di interferenza, le tensioni di sistema alte, il numero di convertitori ASD impiegati nello stesso ambiente e la lunghezza dei cavi di pilotaggio del motore. Un altro fattore importante è relativo alla tecnica di messa a terra impiegata. Dall'esperienza sul campo risulta che la fonte principale di EMI per gli apparati suscettibili, il rumore di modo comune, si accoppia tramite il grigliato/conduttori di messa a terra.
+
+Gli apparati suscettibili sono sostanzialmente i computer, i collegamenti di comunicazione, i sensori ultrasonici, di peso e di temperatura, capacitivi di prossimità, fotoelettrici, i sistemi di lettura dei codici a barre, ecc. Le interfacce di controllo sono in generale costituite da elettroniche di sintesi di segnali nella gamma delle tensioni di 0--10\,V e di correnti di 4--20\,mA.
+
+\begin{table}[htbp]
+\centering
+\caption{Applicazioni con rischio potenziale di EMI.}
+\label{tab:emi_risk}
+\begin{tabular}{p{0.28\textwidth}p{0.28\textwidth}p{0.28\textwidth}}
+\hline
+\textbf{Rischio basso} & \textbf{Rischio medio} & \textbf{Rischio alto} \\
+\hline
+senza PLC o comunicazione & PLC analogico & PLC digitale e comunicazione \\
+230\,V & 460\,V & 575\,V \\
+senza messa a terra & con terra ad alta impedenza & con messa a terra \\
+singolo ASD & 2--5 ASD & numero di ASD~$>5$ \\
+tecnica di messa a terra ottima & tecnica di messa a terra non raccomandata & pessime tecniche di messa a terra \\
+lunghezza cavi $<6.5$\,m & lunghezza cavi tra 6.5 e 33\,m & lunghezza cavi $>33$\,m \\
+\hline
+\end{tabular}
+\end{table}
+
+In Tabella~\ref{tab:emi_risk} sono evidenziati i principali parametri da osservare per progettare un sistema elettromagneticamente compatibile. Maggiore è la tensione alternata al secondario del trasformatore, maggiore sarà la tensione raddrizzata, quindi la differenza di potenziale che verrà vista ai capi degli avvolgimenti del motore sotto forma di segnale PWM. Maggiore è lo \textit{slew rate} $\partial V/\partial t$, ossia la velocità di variazione della tensione ai fronti di variazione del segnale PWM espressa in V/$\mu$s, maggiore sarà la corrente di modo comune $I_{CM} = C_{\lg} \,\partial V/\partial t$ dove $C_{\lg}$ è la capacità parassita presente tra linea e terra. Aumentare il numero di convertitori significa aumentare $I_{CM}$ per sovrapposizione nella terra. Aumentare la frequenza $f_c$ della portante PWM significa aumentare il numero di transizioni (fronti di variazione del segnale PWM), con conseguente aumento di $I_{CM}$ (valor medio). La lunghezza dei cavi di pilotaggio del motore tende ad aumentare la capacità tra linea e terra, con conseguente aumento di $I_{CM}$. All'aumentare della lunghezza del cavo si innescano risonanze con riflessione delle tensioni dell'onda generata alle transizioni raddoppiando le tensioni agli avvolgimenti del motore ($\approx 2 V_{bus}$). In alcuni casi~\cite{amarir2008}, si sono verificate sovratensioni fino a $\approx 4 V_{bus}$, con conseguenti rischi di guasto nei cavi e negli avvolgimenti dei motori.
+
+Una discussione della compatibilità elettromagnetica richiede anche l'analisi della messa a terra, necessariamente utilizzata per motivi di sicurezza degli operatori (Standard IEC). Questa va ad influenzare notevolmente l'entità di rumore di modo comune.
+
+\section{Generazione di EMI}
+
+In questa sezione si discutono la generazione di rumore EMI dai segnali di pilotaggio di modo normale (differenziale) e di modo comune in uscita all'ASD.
+
+\subsection{Generazione della corrente di modo comune}
+
+Il segnale PWM di pilotaggio di un motore è caratterizzato da una durata d'impulso $\tau$ e da un periodo di ripetizione $T = 1/f_c$ (\textit{duty cycle} $\delta = \tau/T$) tale da sintetizzare una sinusoide alla frequenza fondamentale $f_0$ di pilotaggio del motore (Capitolo~2). Valori tipici di frequenza di portante usati con ASD ad IGBT sono dell'ordine di 1--2\,kHz per motori di elevata potenza e fino a 12\,kHz per motori di potenze inferiori.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{pwm_waveform}
+\caption{Tensione di modo normale in uscita ad un ASD di 200\,hp (500\,V/Div) e corrente di modo comune $I_{\lg}$ (10\,A/Div) -- (2\,ms/Div).}
+\label{fig:pwm_waveform}
+\end{figure}
+
+In Figura~\ref{fig:pwm_waveform} vi sono illustrati gli andamenti temporali della tensione di linea, detta anche di modo normale (differenziale), generata dall'ASD e della corrente di modo comune $I_{\lg}$, ossia quella che fluisce nelle tre fasi con riferimento alla terra. Si nota che quest'ultima presenta dei picchi ad ogni transizione della tensione di pilotaggio.
+
+Per spiegare la generazione della corrente di modo comune, è necessario andare ad analizzare, in prima approssimazione, il circuito equivalente del cablaggio. In Figura~\ref{fig:cable_model} viene illustrato un modello del collegamento tra convertitore e motore, evidenziando le principali componenti parassite di una linea trifase posta in un condotto metallico. La tensione di azionamento di modo normale genera una corrente di fase $I_{motor}$ che consiste in 4 componenti: una componente sinusoidale alla frequenza fondamentale $f_0$, un'oscillazione alle armoniche della frequenza sintetizzata (Capitolo~2), una corrente capacitiva $I_{ll}$ che fluisce tra le fasi durante i fronti di variazione della tensione di modo normale e proporzionale a $\partial V/\partial t$ ed un'altra componente capacitiva ma di modo comune $I_{\lg}$ che si manifesta durante la medesima transizione.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{cable_model}
+\caption{Modello semplificato del collegamento ASD-Motore e componenti parassite.}
+\label{fig:cable_model}
+\end{figure}
+
+Come si può notare dalla Figura~\ref{fig:motor_current}, relativa al pilotaggio di un motore di 2\,hp, gli \textit{spikes} che avvengono alle transizioni possono essere di intensità maggiore della componente fondamentale.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{motor_current}
+\caption{Corrente $I_{motor}$ generata dal pilotaggio di modo normale.}
+\label{fig:motor_current}
+\end{figure}
+
+La corrente di carica $I_{ll}$ è determinata dalla tensione $V_{bus}$ e dall'impedenza di corto circuito del cavo (dati dalle resistenze di conduzione $R_{01}$ e $R_{02}$, le autoinduttanze $L_{01}$ e $L_{02}$, la capacità tra linee $C_{ll}$). Il percorso di $I_{ll}$ è limitato ai morsetti di pilotaggio dell'ASD ed alle capacità interlinea. Non dovrebbe quindi interferire con altri apparati, a meno di un lieve contributo radiato dai morsetti del convertitore. Inoltre, questa rimane di modo differenziale purché le caratteristiche dei cavi rimangano perfettamente bilanciate~\cite{steenstra2008}.
+
+$I_{\lg}$, al contrario, non trova un percorso di ritorno immediato al convertitore. Vi sono tre capacità che fungono da ponte di ritorno per tale corrente: la capacità tra linea e terra $I_{\lg}$, quella tra linea e condotto $I_{\lg-c}$ e quella tra linea e gli avvolgimenti statorici del motore $I_{\lg-m}$. Essendo il percorso di ritorno della corrente più largo (coinvolge la terra), vi è una maggior probabilità di interferire con altri apparati. Ponendo una pinza amperometrica intorno alle linee del trifase non dovremmo, in condizioni di terna trifase perfettamente bilanciata, misurare nessuna corrente. Vi è invece una corrente non nulla che fluisce nei tre cavi selezionati ed è appunto la corrente di modo comune $I_{\lg}$. Quest'ultima è, per i motivi appena discussi, il principale generatore di EMI.
+
+\subsection{Percorso della corrente di modo comune}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{common_mode_path}
+\caption{Schema di collegamento generico di un impianto industriale motorizzato a velocità variabile.}
+\label{fig:common_mode_path}
+\end{figure}
+
+La Figura~\ref{fig:common_mode_path} illustra i percorsi della corrente di modo comune in un sistema trasformatore--convertitore--motore collegato a terra. Gli ingressi (R,S,T) del convertitore sono collegati al secondario del trasformatore (A,B,C). Un ponte di diodi raddrizza la tensione alternata in ingresso in una tensione continua $V_{bus}$. L'ASD impiega sei interruttori a stato solido (IGBT) per connettere alternativamente la tensione $V_{bus}$ alle linee di uscita (U,V,W). La cabina del motore è collegata a massa a livello del potenziale~\#3 ed il conduttore di terra del cablaggio viene collegato sia al potenziale~\#1 che alla terra del convertitore. Il tutto viene poi collegato ad una terra comune mediante delle aste impiantate nel suolo al potenziale~\#4, punto in cui viene collegato anche il centro stella (neutro) del secondario del trasformatore.
+
+La corrente $I_{\lg}$ viene generata ad ogni transizione del segnale PWM, il quale presenta uno \textit{slew rate} compreso tra 5000 e 15000\,V/$\mu$s a seconda della tensione $V_{bus}$ e della tecnologia elettronica impiegata. $I_{\lg}$ scorre tramite due capacità, quella tra linea e condotto $C_{\lg-c}$ e quella tra linea ed avvolgimenti statorici del motore $C_{\lg-m}$. Essendo l'impedenza di linea prevalentemente capacitiva, $I_{\lg}$ risulta proporzionale a $(C_{\lg-c} + C_{\lg-m}) \partial V/\partial t$. Si ha quindi una corrente $I_{\lg}$ maggiore per:
+
+\begin{itemize}
+\item convertitori con cavi di pilotaggio lunghi ($C_{\lg-c}$ è maggiore);
+\item motori di potenze elevate ($C_{\lg-m}$ è maggiore);
+\item convertitori con \textit{slew rate} di transizione PWM elevati ($\partial V/\partial t$ è maggiore);
+\item convertitori con elevate tensioni di sistema ($\partial V/\partial t$ è maggiore).
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{common_mode_current}
+\caption{Corrente di modo comune generata dall'azionamento normale e potenziali rinvenuti in diversi punti della terra.}
+\label{fig:common_mode_current}
+\end{figure}
+
+Il valor efficace di $I_{\lg}$ aumenta con la frequenza della portante PWM, provvedimento necessario per migliorare la qualità del segnale di pilotaggio. Incrementare il numero di convertitori, eventualmente necessaria per certe applicazioni industriali, tende ad aumentare l'entità di rumore di modo comune, per un aumento di $I_{\lg}$ nel circuito di terra.
+
+$I_{\lg}$ ritorna al convertitore tramite il collegamento di massa a livello del potenziale~\#1. Vista l'assenza di collegamento diretto tra la massa del convertitore e la tensione $V_{bus}$, non resta ad $I_{\lg}$ che di tornare tramite il centro stella del secondario del trasformatore quindi arrivare ai morsetti (R,S,T) del convertitore.
+
+Lo schema di Figura~\ref{fig:common_mode_path} non è raccomandato per il progetto di sistemi industriali moderni. In effetti, le nuove tecnologie di convertitori, prediligendo l'efficienza energetica alla compatibilità elettromagnetica, fanno impiego di interruttori IGBT che presentano tempi di commutazione 10 a 20 volte inferiori rispetto ai BJT. La corrente di modo comune che si genera non è più di entità trascurabile, ed è necessario intraprendere misure atte ad allontanare il percorso della corrente di ritorno a massa dall'elettronica suscettibile di interferenza.
+
+\subsection{Tensione di modo comune come sorgente EMI}
+
+Per analizzare la tensione di modo comune associata alle linee di pilotaggio, si collegano a stella delle resistenze di valore elevato ($\propto$\,M$\Omega$) alle linee di pilotaggio. Si misura quindi una tensione $V_{ng}$ tra il centro stella, \textit{neutro virtuale}, e massa come illustrato in Figura~\ref{fig:common_mode_path}.
+
+In Figura~\ref{fig:vng_waveform}, si evidenzia l'andamento a forma d'onda PWM di $V_{ng}$ risultante dalla combinazione dei segnali generati su ciascuna linea. Nel caso di un sistema trifase in equilibrio, avremmo una risultante nulla. Questo è il motivo per il quale il segnale di modo comune ottenuto da un convertitore PWM viene detto \textit{neutral shift voltage}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{vng_waveform}
+\caption{$V_{ng}$ (100\,V/Div) e $I_{\lg}$ (2\,A/Div) per una frequenza di commutazione $f_c = 4$\,kHz (50\,$\mu$s/Div)~\cite{skibinski1998}.}
+\label{fig:vng_waveform}
+\end{figure}
+
+La corrente di modo comune presenta dei picchi ad ogni variazione ripida della tensione di neutro. Quest'ultima può quindi dirsi come generatrice della corrente capacitiva di modo comune.
+
+Il ponte a sei interruttori a stato solido si basa su otto stati di commutazione che spiegano l'andamento preciso di $V_{ng}$ in sei fasi.
+
+\subsection{Spettro della sorgente di rumore}
+
+La frequenza di commutazione $f_c$ può variare da 1 fino a 12\,kHz. Lo spettro del rumore è quindi composto da componenti impulsive a banda larga nella gamma RF (radiofrequenza) generate dai transienti di tensione e corrente associati alle commutazioni.
+
+I parametri che influenzano lo spettro sono:
+\begin{itemize}
+\item la frequenza di commutazione $f_c$ e le sue armoniche;
+\item i tempi di salita e discesa ($t_{rise}$, $t_{fall}$) dei fronti PWM;
+\item la tensione $V_{bus}$ del bus DC;
+\item la geometria e la lunghezza dei cavi (che determinano le risonanze).
+\end{itemize}
+
+\section{Meccanismi di accoppiamento dell'EMI}
+
+I meccanismi di accoppiamento dell'EMI in un sistema ASD comprendono sia il percorso condotto che quello radiato.
+
+\subsection{Corrente di modo comune condotta nella terra}
+
+La corrente di modo comune $I_{\lg}$ fluisce attraverso il percorso di terra comune, creando differenze di potenziale tra diversi punti di terra (\textit{ground loops}). Queste differenze di potenziale possono causare il malfunzionamento di apparati sensibili collegati allo stesso sistema di terra.
+
+\subsection{Distanza critica}
+
+La distanza critica è la lunghezza di cavo oltre la quale si iniziano a manifestare fenomeni di sovratensione per riflessione. Per i comuni cavi da motore con isolamento in PVC, la velocità di propagazione dell'onda è approssimativamente $v_p \approx 2/3\,c$. La lunghezza d'onda del fronte di salita è $\lambda_r = v_p / f_{eq}$ dove $f_{eq} \approx 0.35 / t_{rise}$ è la frequenza equivalente del fronte di salita. Quando la lunghezza del cavo supera $\lambda_r/10$, si hanno fenomeni di riflessione apprezzabili.
+
+\subsection{Corrente di modo comune accoppiata capacitivamente ad un segnale di tensione}
+
+L'accoppiamento capacitivo tra le linee di potenza e le linee di segnale avviene tramite la capacità parassita $C_{coupling}$ presente tra i conduttori. La corrente disturbante accoppiata è $I_{noise} = C_{coupling} \cdot dV/dt$.
+
+\subsection{Corrente di modo comune accoppiata capacitivamente alle linee di alimentazione}
+
+Analogamente, la corrente di modo comune può accoppiarsi alle linee di alimentazione di altri apparati, propagando il disturbo al di fuori dell'impianto motorizzato.
+
+\subsection{Schermo collegato alla massa rumorosa del trasmettitore}
+
+Collegare lo schermo di un cavo alla massa rumorosa del trasmettitore (lato ASD) può ridurre l'accoppiamento capacitivo ma può anche creare percorsi di richiusura della corrente di modo comune attraverso lo schermo.
+
+\subsection{Schermo collegato alla massa rumorosa del ricevitore}
+
+Analogamente, il collegamento dello schermo al lato ricevitore ha effetti diversi sulla riduzione dell'EMI e va valutato in base alla configurazione specifica dell'impianto.
+
+\subsection{Corrente di modo comune condotta ed emissioni radiate}
+
+La corrente di modo comune che fluisce nei cavi di collegamento crea un'antenna involontaria, generando emissioni radiate. L'efficienza di irradiazione dipende dalla lunghezza del cavo rispetto alla lunghezza d'onda delle componenti spettrali del rumore. In generale, cavi più lunghi agiscono come antenne più efficienti a frequenze più basse.
+
+\section{Mitigazione dell'EMI}
+
+\subsection{Terra per le basse e le alte frequenze}
+
+La realizzazione di un sistema di terra efficace è fondamentale per la mitigazione dell'EMI. Per le basse frequenze (50--60\,Hz), la terra deve garantire la sicurezza degli operatori con basse impedenze. Per le alte frequenze (kHz--MHz), la terra deve presentare una bassa impedenza anche alle componenti armoniche del rumore di commutazione.
+
+Si raccomanda l'uso di piastre di terra a bassa impedenza (\textit{ground plane}) e di conduttori di terra a treccia corta e larga per minimizzare l'impedenza ad alta frequenza. È importante evitare anelli di massa (\textit{ground loops}) che possano captare rumore.
+
+Il sistema di messa a terra dovrebbe seguire le raccomandazioni della IEEE Std 1100-1999~\cite{ieee1100}:
+
+\begin{itemize}
+\item utilizzare un conduttore di terra dedicato per ogni apparato;
+\item connettere tutti i conduttori di terra ad un punto di terra comune (\textit{single-point ground});
+\item evitare percorsi di terra condivisi tra circuiti di potenza e di segnale;
+\item utilizzare piani di massa a bassa impedenza per le alte frequenze.
+\end{itemize}
+
+\subsection{Attenuazione della sorgente di rumore}
+
+La riduzione dell'EMI alla fonte è l'approccio più efficace. Le principali tecniche includono:
+
+\begin{itemize}
+\item riduzione dello \textit{slew rate} $\partial V/\partial t$ mediante resistori di \textit{gate} negli IGBT;
+\item aumento del tempo di salita $t_{rise}$ (entro i limiti di dissipazione termica);
+\item filtri di uscita (\textit{output filter}) tra ASD e motore;
+\item filtri d'ingresso (\textit{input filter}) sul lato rete;
+\item utilizzo di cavi schermati con schermo collegato a terra ad alta frequenza;
+\item separazione fisica dei cavi di potenza da quelli di segnale.
+\end{itemize}
+
+I filtri EMI possono essere di tipo passivo (induttori, condensatori) o attivo (circuiti di cancellazione attiva del rumore)~\cite{wang2008, xiang1998, julian1998}.
+
+\subsection{Isolamento del rumore di modo comune}
+
+L'isolamento del rumore di modo comune si ottiene mediante:
+
+\begin{itemize}
+\item trasformatori di isolamento con schermo elettrostatico tra primario e secondario;
+\item filtri \textit{common-mode} (induttori di modo comune) che presentano alta impedenza al rumore di modo comune e bassa impedenza al segnale differenziale;
+\item \textit{common-mode choke} posizionati sull'uscita dell'ASD;
+\item isolamento galvanico mediante optoisolatori o isolatori digitali per le linee di segnale;
+\item utilizzo di fibre ottiche per le comunicazioni dati critiche.
+\end{itemize}
+
+\subsection{Riduzione della corrente di rumore condotta nella terra}
+
+Per ridurre la corrente di rumore condotta nella terra, si possono impiegare:
+
+\begin{itemize}
+\item filtri \textit{common-mode} sul lato di ingresso dell'ASD;
+\item resistori di \textit{gate} per rallentare la commutazione degli IGBT;
+\item condensatori di \textit{bypass} ad alta frequenza tra i conduttori di fase e terra;
+\item \textit{hybrid EMI filter} che combina filtraggio passivo e attivo~\cite{wang2008}.
+\end{itemize}
+
+\subsection{Riduzione delle emissioni radiate con cavi schermati}
+
+I cavi schermati riducono le emissioni radiate confinando il campo elettromagnetico all'interno dello schermo. L'efficacia dello schermo dipende da:
+
+\begin{itemize}
+\item tipo di schermo (treccia, spirale, foglio metallico, combinazioni);
+\item copertura ottica dello schermo (percentuale di area coperta);
+\item qualità del collegamento dello schermo a terra (bassa impedenza ad alta frequenza);
+\item connessione a 360 gradi dello schermo ai connettori.
+\end{itemize}
+
+\subsection{Efficienza di schermatura dei cavi}
+
+L'efficienza di schermatura ($SE$) è espressa in dB come rapporto tra il campo incidente e quello trasmesso:
+
+\begin{equation}
+SE = 20 \log_{10} \left( \frac{E_i}{E_t} \right) \quad \text{[dB]}
+\end{equation}
+
+Per i cavi di potenza degli ASD, si raccomandano cavi con schermo a treccia in rame con copertura $\ge 85\%$, connessi a terra ad entrambe le estremità tramite connettori a 360 gradi.
+
+\subsection{Cattura e deviazione della corrente di rumore all'ASD}
+
+Tecniche di cattura e deviazione della corrente di rumore includono:
+
+\begin{itemize}
+\item piani di massa dedicati con bassa impedenza;
+\item barre di rame per la distribuzione della terra;
+\item filtri \textit{common-mode} posizionati all'uscita dell'inverter;
+\item condensatori di disaccoppiamento ad alta frequenza posti tra i conduttori di fase e la terra locale dell'ASD.
+\end{itemize}
+
+\section{Effetto dell'EMI sugli apparati suscettibili}
+
+\subsection{Segnali di controllo analogici}
+
+I segnali di controllo analogici (0--10\,V, 4--20\,mA) sono particolarmente suscettibili al rumore di modo comune. Il rumore accoppiato può causare:
+
+\begin{itemize}
+\item derive del segnale di controllo;
+\item oscillazioni indesiderate del processo controllato;
+\item errori di lettura nei sensori;
+\item attivazione o disattivazione errata di attuatori.
+\end{itemize}
+
+Per proteggere i segnali analogici, si raccomanda l'uso di cavi schermati a doppino intrecciato (\textit{twisted pair}), una separazione fisica adeguata dai cavi di potenza ($\ge 30$\,cm per tratti paralleli), e l'uso di amplificatori di isolamento.
+
+\subsection{Sensori esterni}
+
+I sensori esterni (ultrasonici, di temperatura, capacitivi di prossimità, fotoelettrici, di peso, lettori di codici a barre, ecc.) sono esposti all'ambiente rumoroso dell'impianto industriale. Le interferenze possono manifestarsi come:
+
+\begin{itemize}
+\item letture errate o intermittenti;
+\item riduzione della portata operativa (distanza di sensing);
+\item falsi trigger;
+\item guasti prematuri dell'elettronica del sensore.
+\end{itemize}
+
+\section{Modellizzazione dell'EMI}
+
+La modellizzazione matematica del sistema ASD per lo studio dell'EMI è fondamentale per la corretta comprensione dei meccanismi fisici di disturbo in vista di una possibile correzione. Il modello deve rappresentare adeguatamente i vari componenti del sistema, ciascuno con le proprie caratteristiche elettriche e parassite.
+
+\subsection{Modello del convertitore}
+
+Il modello del convertitore include i dispositivi di potenza (IGBT) con i loro parametri parassiti, il bus DC con le sue capacità e induttanze parassite, e la logica di controllo PWM. I modelli possono essere di tipo comportamentale (basati sulle forme d'onda ideali) o fisico (basati sulle caratteristiche dettagliate dei dispositivi a semiconduttore).
+
+Per lo studio delle EMI, il modello deve rappresentare correttamente i fronti di commutazione ($t_{rise}$, $t_{fall}$) e le sovraelongazioni (\textit{overshoot}) associate alla commutazione degli IGBT.
+
+\subsection{Modello del cablaggio}
+
+Il modello del cablaggio deve includere gli effetti parassiti distribuiti del cavo: resistenza $R$, autoinduttanza $L$, conduttanza $G$ e capacità $C$ per unità di lunghezza. Per cavi lunghi, si devono utilizzare modelli a parametri distribuiti (linee di trasmissione) piuttosto che modelli a parametri concentrati.
+
+I parametri parassiti dipendono dalla geometria del cavo (sezione, distanza tra conduttori, tipo di isolante) e dalla sua disposizione (in condotto metallico, all'aria, interrato). I modelli devono anche includere le capacità parassite tra conduttori e tra conduttori e terra~\cite{steenstra2008}.
+
+\subsection{Modello del motore}
+
+Il modello del motore deve rappresentare adeguatamente le capacità parassite tra gli avvolgimenti statorici e la carcassa del motore ($C_{\lg-m}$), e tra gli avvolgimenti rotorici e statorici. A seconda della frequenza di interesse, il modello può includere anche gli effetti della saturazione magnetica e delle correnti armoniche.
+
+Modelli avanzati come quelli basati su circuiti accoppiati con elementi finiti (\textit{FE-circuit coupled}) permettono una rappresentazione dettagliata dei fenomeni elettromagnetici all'interno del motore~\cite{mohammed2010}.
+
+\subsection{Modello del sistema}
+
+Il modello completo del sistema integra i sottomodelli del convertitore, del cablaggio e del motore in un'unica simulazione. L'analisi può essere condotta nel dominio del tempo (simulazioni transienti con risoluzione dell'ordine dei nanosecondi per catturare i fronti di commutazione) o nel dominio della frequenza (mediante trasformata di Fourier veloce delle forme d'onda temporali).
+
+I software di simulazione circuitale (quali SPICE, Saber, Simplorer) sono comunemente impiegati per queste analisi. L'accuratezza del modello dipende dalla completezza dei parametri parassiti inclusi e dalla corretta rappresentazione dei fenomeni ad alta frequenza.
+
+Modelli semplificati possono essere utilizzati per stime di prima approssimazione~\cite{costa2005, moreau2009, gubia2005, jettanasen2009, ran1998}, mentre modelli più dettagliati sono necessari per la progettazione di filtri e misure di mitigazione specifiche.

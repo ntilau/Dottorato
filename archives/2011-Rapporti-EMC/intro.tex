@@ -1,0 +1,38 @@
+\chapter{Introduzione}
+
+L'impiego di motori elettrici di potenze elevate ed a velocità variabili presenta notevoli criticità nel progetto degli impianti industriali. Garantire il corretto funzionamento di apparati a bassa potenza integrati all'impianto o circostanti quali sono i sistemi di comunicazione e di telecontrollo, richiede un'attenta analisi del problema da un punto di vista elettromagnetico. La collocazione e l'interconnessione dei vari componenti del sistema, ossia, nell'ambito del presente studio, il trasformatore di rete, il controllore di tensione/frequenza ed il motore elettrico (Figura~\ref{fig:sistema}), influenzano notevolmente la generazione di disturbi elettromagnetici o, più comunemente, interferenza elettromagnetica o \textit{EMI} (\textit{ElectroMagnetic Interference}), sia condotta che radiata.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{sistema}
+\caption{Struttura di un impianto industriale motorizzato.}
+\label{fig:sistema}
+\end{figure}
+
+La compatibilità elettromagnetica o \textit{EMC} (\textit{ElectroMagnetic Compatibility}) in un tale ambiente, notevolmente rumoroso visto il livello delle potenze in gioco, risulta difficile da assicurare se non con opportuni accorgimenti. Per effetto dell'accoppiamento elettromagnetico del disturbo, si possono presentare malfunzionamenti o vere e proprie avarie sia nel sistema di controllo dell'elettronica di potenza (\textit{Control Logic}) che nell'eventuale elettronica di segnalazione circostante al sistema.
+
+Un sistema elettrico o elettronico si dice elettromagneticamente compatibile con l'ambiente circostante se esso non è causa di interferenze elettromagnetiche con se stesso (interferenza intrasistema) e con altri sistemi (interferenza intersistemi), e se a sua volta non è suscettibile (immune) ad interferenze. Trattasi quindi del fatto che diversi apparati, dispositivi, sistemi elettrici siano in grado di sopportare mutualmente i loro effetti elettromagnetici~\cite{dun2007}. L'EMI può essere di tipo condotto o radiato (Figura~\ref{fig:accoppiamento}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{compatibility_levels}
+\caption{Livelli di compatibilità elettromagnetica.}
+\label{fig:compatibility}
+\end{figure}
+
+Si distinguono, nel percorso di accoppiamento, le emissioni radiate e, di conseguenza, la suscettibilità radiata, e le emissioni e suscettibilità condotte (Figura~\ref{fig:accoppiamento}). Le perturbazioni condotte sono trasmesse tramite cavi (linee di alimentazione, bus di trasmissione dati, terra, capacità parassite) mentre quelle radiate sono veicolate dal mezzo circostante (aria, ecc.). In generale, le emissioni condotte hanno un percorso di accoppiamento più efficiente di quelle radiate, l'energia elettromagnetica rimanendo confinata entro un determinato spazio.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{coupling}
+\caption{Modalità di accoppiamento dell'EMI.}
+\label{fig:accoppiamento}
+\end{figure}
+
+Le perturbazioni elettromagnetiche possono essere di tipo naturale, quali fulmini e raggi cosmici, oppure artificiali. Tra queste ultime si distinguono le sorgenti intenzionali, quali radar, trasmettitori radio, forni a microonde e così via, e quelli non intenzionali come i cavi ad alta tensione, i sistemi d'illuminazione, alimentatori, ecc.
+
+Il metodo principale usato per studiare gli effetti dell'interferenza è la modellizzazione matematica. Un modello matematico è tale da quantificare la nostra comprensione del fenomeno ed è tale da rappresentare adeguatamente il fenomeno se è sufficientemente accurato da predire i risultati sperimentali.
+
+Nel \hyperref[ch:controllori]{Capitolo~2} viene discusso il principio di funzionamento dei vari componenti del sistema, in particolare di vari tipi di controllori. Una breve trattazione sulla tipologia di motori utilizzati in ambito industriale introduce all'evoluzione dei controllori, fino alle più recenti tecniche di pilotaggio.
+
+Si evidenziano quindi nel \hyperref[ch:emissioni]{Capitolo~3} le fonti di EMI, i meccanismi di accoppiamento del segnale interferente con potenziali vittime e le tecniche di mitigazione dell'EMI da impiegare in fase progettuale. Inoltre, vengono discussi alcuni aspetti relativi all'elettronica suscettibile d'interferenza e gli effetti dell'interferenza su di essa. Seguono le maggiori tecniche di modellizzazione dell'impianto motorizzato, molto importanti per la corretta comprensione dei meccanismi fisici di disturbo in vista di una possibile correzione. Infine, vengono discussi gli standard e le tecniche di misura relativi al sistema considerato.

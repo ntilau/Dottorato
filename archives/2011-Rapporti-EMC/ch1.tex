@@ -1,0 +1,188 @@
+\chapter{Controllori per Impianti Industriali Motorizzati}
+\label{ch:controllori}
+
+Con la capacità di convertire energia elettrica in lavoro meccanico, i motori elettrici trovano molteplici applicazioni negli impianti industriali. Il controllore, apparato che pilota il motore elettrico, ha sostanzialmente lo scopo di controllare il flusso di energia ad una generica applicazione industriale. L'energia viene trasmessa al processo tramite l'albero motore, il cui stato viene descritto tramite due grandezze fisiche: la coppia e la velocità di rotazione. Il controllore deve quindi poter agire su tali grandezze. In pratica, una sola di queste grandezze viene tipicamente controllata, l'altra venendo determinata dal carico (meccanico) visto dal motore.
+
+Per studiare il funzionamento dei controllori per motori industriali, si deve analizzare il funzionamento dei motori stessi. Segue quindi una breve discussione delle varie tipologie di motori elettrici disponibili.
+
+\section{Motori elettrici}
+
+I motori elettrici possono essere distinti secondo la corrente di alimentazione: corrente alternata (AC) o continua (DC)~\cite{beaty2004, hughes2006}. Vi sono altri tipi di motori, ma questi sono tipicamente di piccola taglia e non verranno per questo motivo analizzati in questo documento.
+
+Tra i motori AC vi sono quelli asincroni, o ad induzione, e quelli sincroni. Gli avvolgimenti statorici dei motori AC sono percorsi da una corrente sinusoidale a frequenza $f$ che, grazie alla particolare disposizione geometrica di questi elettromagneti, genera un campo magnetico rotante. Nel caso dei motori asincroni, vengono indotte nel rotore metallico delle correnti che generano a loro volta un campo magnetico opposto a quello impresso. Ne risulta una forza magnetomotrice rotatoria con momento lungo l'asse dell'albero. Il rotore insegue quindi la velocità di rotazione del campo magnetico impresso, entro un certo scorrimento o \textit{slip} $s = \frac{\omega_s - \omega_r}{\omega_s}$ con $\omega_s = 60\frac{f}{p}$ la velocità di rotazione del campo magnetico o velocità di sincronismo, $p$ il numero di coppie polari dell'avvolgimento statorico, e $\omega_r$ la velocità di rotazione reale. Invece, nel caso di un motore sincrono, una corrente continua percorre gli avvolgimenti rotorici, consentendo quindi la rotazione dell'albero motore alla velocità di sincronismo, ossia ad uno scorrimento nullo. In definitiva, la frequenza di rotazione di un motore AC può essere controllata tramite un controllo della frequenza dell'eccitazione elettrica.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{induction_motor}
+\caption{Sezione trasversale di un motore ad induzione.}
+\label{fig:induction_motor}
+\end{figure}
+
+Dalla breve precedente descrizione del funzionamento dei motori AC, risulta che per ottenere la trasformazione dell'energia elettrica in una meccanica rotante è necessario ricreare un campo magnetico rotante. L'alimentazione in corrente continua non consente con i semplici avvolgimenti statorici e rotorici, di generare un campo magnetico rotante. Questo si ottiene con l'introduzione del commutatore, un dispositivo che inverte ciclicamente il verso della corrente degli avvolgimenti rotorici, dando l'effetto desiderato. Si noti che in questo caso la corrente statorica è costante. Il commutatore o collettore a spazzole (\textit{brushes}), è costituito da due pennelli in contatto con un anello opportunamente partizionato, e via via che l'albero motore effettua una rotazione, seleziona il polo dell'avvolgimento dal quale entra la corrente. La velocità di rotazione del motore DC è proporzionale alla tensione di eccitazione degli avvolgimenti rotorici.
+
+I motori AC, in particolare quelli a gabbia di scoiattolo (asincrono), sono tra quelli maggiormente usati negli impianti industriali. Tali motori presentano una maggior affidabilità e richiedono una manutenzione decisamente inferiore alla controparte DC. In effetti, l'assenza di spazzole riduce nel complesso la degradazione delle parti meccaniche, consentendo quindi un elevato tempo medio al guasto (\textit{Mean Time Between Failure} o MTBF). Per questo motivo analizzeremo il controllo dei motori asincroni, in particolare quelli trifase in grado di sviluppare potenze sufficienti al fabbisogno dei processi industriali.
+
+\section{Controllo di motori asincroni}
+
+Gli impianti industriali motorizzati a velocità variabile sono sostanzialmente di quattro forme. Vi sono quelli a controllo meccanico, mediante ingranaggi di trasmissione per selezionare in modo discontinuo la velocità trasmessa all'albero motore. Quelli ad accoppiamento idraulico consentono un controllo della velocità dell'albero motore andando a variare il volume di olio immesso nell'accoppiatore idraulico. Queste prime due tecniche, di carattere meccanico, presentano difficoltà maggiori di controllo ed efficienze inferiori rispetto ai controllori DC e quelli AC. I controllori DC, pilotando appunto motori DC, vanno a variare la tensione di eccitazione del motore con opportuni convertitori AC-DC. Quest'ultimi sono composti da raddrizzatori e da opportuni convertitori DC-DC (step-up, step-down, ecc.). Il controllo dei motori AC presenta, come vedremo nel seguito, notevoli vantaggi che si sono tradotti negli anni con una maggior presenza sul mercato (Figura~\ref{fig:market})~\cite{abb2011}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{market_share}
+\caption{Presenza sul mercato dei motori DC e AC nel decennio 1990-2000.}
+\label{fig:market}
+\end{figure}
+
+Il controllo dei motori asincroni si ottiene con convertitori di frequenza o \textit{VFD} (\textit{Variable Frequency Drive}), apparati in grado di variare la frequenza delle tensioni e correnti alternate di eccitazione. Un convertitore di frequenza consiste in tre parti (Figura~\ref{fig:vfd_schema}). Un raddrizzatore che converte la corrente di alimentazione trifase a 50\,Hz (60\,Hz negli USA) in una corrente continua. Segue un circuito di stabilizzazione della tensione continua, costituito da filtri. Infine, un inverter (convertitore DC-AC), costituito da interruttori controllati, collega le fasi del motore ai poli positivo e negativo dello stabilizzatore di tensione.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{vfd_schema}
+\caption{Schema di principio di un convertitore di frequenza.}
+\label{fig:vfd_schema}
+\end{figure}
+
+In Figura~\ref{fig:vfd_schema}, per ottenere una rotazione oraria del campo magnetico è sufficiente chiudere gli interruttori $V_1$, $V_4$ e $V_5$ lasciando i restanti aperti. Il campo magnetico ruota quindi di $60^\circ$. Per evitare cortocircuiti nel ponte di interruttori è necessario evitare la chiusura contemporanea di interruttori posti in serie nel medesimo ramo. In caso contrario, la corrente che vi circolerebbe, oltre a comportare un significativo spreco energetico quindi una minor efficienza di conversione, potrebbe causare la rottura degli interruttori stessi. Si tende quindi a privilegiare dispositivi in grado di commutare rapidamente e di supportare forti correnti di picco.
+
+La Figura~\ref{fig:rotating_field} rappresenta lo schema di commutazione in otto fasi di un inverter, due delle quali sono state omesse perché prive di effetto sulla forza magnetomotrice, ossia quando entrambe le linee del trifase sono collegate al medesimo potenziale positivo o negativo. La figura illustra quindi le sei fasi rilevanti, a tensione non nulla negli avvolgimenti, con il relativo campo magnetico rappresentato da una freccia.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{rotating_field}
+\caption{Campo magnetico rotante ottenuto mediante un inverter.}
+\label{fig:rotating_field}
+\end{figure}
+
+I VFD presentano notevoli vantaggi oltre al controllo della frequenza di sincronismo (e quella reale con particolari sistemi retroattivi) del motore quali il risparmio energetico. Il controllo della frequenza è migliore e può essere di tipo \textit{stepless}, ossia il controllo continuo della velocità e della coppia del motore per applicazioni in cui il movimento dell'albero deve poter essere regolato in tempo reale~\cite{kureck2009}.
+
+L'efficienza totale del sistema motorizzato dipende dalle perdite sia del motore che del controllore. Queste perdite si manifestano come energia termica dissipata. La potenza elettrica in ingresso $P_{in}$ dipende dalla tensione $U$, dalla corrente $I$ e dal fattore di potenza $\cos\varphi$. Il fattore di potenza esplicita la porzione di potenza attiva della potenza elettrica complessiva, quella restante essendo di tipo reattivo. Solo la potenza attiva potrà essere convertita in potenza meccanica, mentre la potenza reattiva è necessaria a produrre la magnetizzazione del motore. La potenza meccanica in uscita $P_{out}$ dipende dalla coppia $C$ e la velocità di rotazione $\omega_r$. Maggiore è la velocità o la coppia richiesta, maggiore sarà la potenza necessaria ($P_{out} = \omega_r C$).
+
+Coppia e velocità di rotazione hanno un effetto diretto sull'assorbimento di potenza elettrica dall'alimentazione. In generale, il controllore di frequenza è in grado di regolare anche la tensione di eccitazione del motore, controllando quindi direttamente la potenza disponibile nel processo industriale da controllare. La commutazione con dispositivi elettronici è molto efficiente, ed è tale per cui l'efficienza complessiva del convertitore varia tra 97 e 99\%. L'efficienza di un motore invece può variare tra 82 e 97\%, a seconda della taglia. In generale, l'efficienza del sistema è sempre superiore all'80\% quando il motore è pilotato da un VFD.
+
+Oltre ai vantaggi dall'impiego di un inverter, vi è una serie di caratteristiche disponibili con un controllore VFD:
+
+\begin{itemize}
+\item il controllo ingresso-uscita: ossia la possibilità di ottimizzare il comportamento del motore a svariati stimoli, utile nel controllo ad hoc di un determinato processo industriale;
+\item la rotazione inversa, facilmente ottenibile da un opportuno controllo inverso del ciclo di commutazione ad otto stati (o più stati);
+\item la variazione dell'accelerazione o decelerazione del motore con una modulazione di frequenza;
+\item il controllo della coppia, proporzionale al rapporto tra la tensione e la frequenza del segnale di eccitazione (in V/Hz);
+\item l'aumento di coppia istantaneo (\textit{torque boosting}) per compensare sovraccarichi meccanici;
+\item l'eliminazione di vibrazioni meccaniche, associate a risonanze nel supporto del motore (velocità critiche);
+\item la limitazione della potenza fornita in caso di sovraccarico, evitando un guasto nell'impianto;
+\item il funzionamento del controllore anche in presenza di guasti nell'alimentazione, utilizzando il motore in frenatura rigenerante;
+\item la protezione del motore in una situazione di stallo all'avviamento, controllando l'aumento della coppia motrice;
+\item la compensazione dello scorrimento in caso di aumento di carico, controbilanciando la coppia;
+\item l'aumento graduale di eccitazione del motore per smorzare la corrente di spunto (\textit{flying start}).
+\end{itemize}
+
+I VFD rappresentano da molti punti di vista il miglior metodo di controllo dei processi industriali motorizzati. Ciò nonostante, la tecnologia alla base del suo sviluppo, gli interruttori elettronici di potenza, introducono notevoli disturbi sia nella rete di distribuzione che nell'ambiente circostante all'impianto. Questi disturbi devono essere controllati affinché l'impianto stesso possa funzionare e che non vi siano malfunzionamenti ad apparati elettronici circostanti.
+
+\section{Dispositivi elettronici di potenza}
+
+Prima di analizzare i segnali di pilotaggio dei motori e le loro caratteristiche, vediamo quali sono le principali tecnologie elettroniche impiegate nella realizzazione dei moderni VFD.
+
+I dispositivi di potenza a semiconduttore costituiscono il cuore delle moderne applicazioni di potenza. Dall'introduzione negli anni '50 del tiristore (\textit{thyristor}) dalla General Electric sotto il nome di \textit{Silicon Controlled Rectifier}, tutta una serie di dispositivi sempre più sofisticati sono stati realizzati: triacs, \textit{Gate Turn-Off} thyristors (GTO), i BJT (\textit{Bipolar Junction Transistors}) di potenza, i MOSFET (\textit{Metal Oxide Semiconductor Field Effect Transistors}) di potenza, gli \textit{Insulated Gate Bipolar Transistors} (IGBT), gli \textit{Static Induction Transistors} (SIT), gli \textit{Static Induction Thyristors} (SITH) ed i \textit{MOS-Controlled Thyristors} (MCT).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{power_devices}
+\caption{Simboli relativi ad alcuni dispositivi di potenza e relative caratteristiche elettriche.}
+\label{fig:power_devices}
+\end{figure}
+
+Questi dispositivi, operanti come commutatori controllati, consentono di partizionare la potenza fornita al carico generando opportune forme d'onda. In particolare, si richiede che il dispositivo sia in grado di sopportare elevate tensioni nello stato di interruttore aperto (tensione di blocco) generando debolissime correnti di perdita, mentre deve essere massimizzata la corrente di conduzione ad interruttore chiuso. Si vuole inoltre che il dispositivo sia in grado di commutare rapidamente, sia per motivi di efficienza energetica che per poter utilizzare frequenze di commutazione elevate, le quali consentono di sintetizzare le migliori forme d'onda per il controllo delle macchine elettriche. La frequenza di commutazione dipende dalla velocità di commutazione del dispositivo e dalla sua capacità di dissipare il calore generato per effetto Joule durante le commutazioni.
+
+I principali dispositivi usati nei VFD ad alta potenza sono gli IGBT ed i GTO, od una qualche loro evoluzione. Come si evince dalla Figura~\ref{fig:power_ratings}, gli IGBT ed i GTO sono dispositivi in grado di operare alle medie tensioni (1-35\,kV~\cite{ieee1623}) e trovano applicazioni a potenze dell'ordine dei megawatt. Vi sono inoltre i più recenti IGCT (\textit{Insulated Gate-Commutated Thyristors}), evoluzione dei GTO che inglobano i vantaggi degli IGBT per una commutazione più rapida. Sono quindi dispositivi in grado di supportare tensioni e correnti molto elevate, pur consentendo una frequenza di commutazione dell'ordine del kHz~\cite{abb2011}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{power_ratings}
+\caption{Alcuni dispositivi di potenza e relative caratteristiche elettriche~\cite{bose1997}.}
+\label{fig:power_ratings}
+\end{figure}
+
+La rapida evoluzione dei dispositivi ha consentito la realizzazione di applicazioni ed impianti di potenza elevata, il singolo commutatore essendo in grado di reggere qualche decina di MW di potenza erogata al carico~\cite{nistor2008}.
+
+I valori massimi di tensione e corrente operativi per i dispositivi di potenza hanno un'influenza diretta sull'entità dei disturbi generati. È interessante notare come si sia sviluppata la tecnologia dei commutatori elettronici nel secolo scorso (Figura~\ref{fig:device_evolution}) per consentire la loro applicazione in sistemi di potenza sempre maggiore, generando di conseguenza ambienti industriali sempre più rumorosi da un punto di vista elettromagnetico.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{device_evolution}
+\caption{Evoluzione dei dispositivi di potenza nel secolo scorso.}
+\label{fig:device_evolution}
+\end{figure}
+
+\section{Modalità di funzionamento di un inverter}
+
+\subsection{Voltage Source Inverter}
+
+In un \textit{VSI} (\textit{Voltage Source Inverter}) è la tensione in uscita ad essere controllata affinché ai capi del carico si abbia una forma d'onda modulata PWM di ampiezza costante ma larghezza d'impulso variabile, come descritto analiticamente nel seguito della sezione.
+
+Le forme d'onda di Figura~\ref{fig:vsi_waveforms} sono relative ad un VSI trifase. La tensione $U_{d}$ è la tensione raddrizzata disponibile ai capi dello stabilizzatore (bus capacitivo), $V_{aN}$ è la tensione, rispetto al centro stella virtuale, sintetizzata dalla particolare sequenza di commutazione descritta in Figura~2.4. La tensione tra fasi $V_{ab}$ risulta dalla differenza $V_{aN} - V_{bN}$. Infine, la tensione concatenata $V_{ab}$ presenta dei gradini di tensione di ampiezza $U_{d}$. La corrente $i_{a}$ nel carico, filtrata dalla sua impedenza, presenta una forma d'onda che per frequenze di commutazione sufficientemente elevate (maggiore di 1\,kHz) si presenta di tipo pseudo-sinusoidale.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{vsi_waveforms}
+\caption{Forme d'onda sintetizzate dall'inverter trifase: (a) tensioni ai capi dei morsetti dell'inverter, (b) potenziale di centro stella, (c) tensioni di fase del carico.}
+\label{fig:vsi_waveforms}
+\end{figure}
+
+La tensione efficace $V_{ab,RMS}$ della portante PWM è:
+\begin{equation}
+V_{ab,RMS} = U_{d} \sqrt{\frac{2}{3}}
+\end{equation}
+
+Sviluppando in serie di Fourier la tensione $V_{aN}$ si possono ricavare le varie armoniche della forma d'onda modulata, e quindi le proprietà spettrali del segnale. Un risultato importante di questa analisi è che le armoniche multiple di 3 (= 3, 6, 9,\ldots) sono delle componenti di modo comune~\cite{luo2005}.
+
+Ad una frequenza $f_c$ della portante (\textit{carrier frequency}) sufficientemente elevata, si hanno le seguenti relazioni tra le tensioni di fase e di linea:
+
+\begin{equation}
+V_a(t) = V_{a0}(t) - V_{n0}
+\end{equation}
+\begin{equation}
+V_{n0} = \frac{V_{a0} + V_{b0} + V_{c0}}{3}
+\end{equation}
+
+La tensione del centro stella $V_{n0}$ presenta delle armoniche alle frequenze impulsive e loro multiple, mentre la tensione di linea $V_{ab}$, $V_{bc}$ e $V_{ca}$, essendo differenze di tensioni di fase, non le presentano.
+
+La tecnica di modulazione a larghezza d'impulso sinusoidale (\textit{Sinusoidal PWM} o SPWM) utilizza una portante triangolare (frequenza $f_c$) e tre segnali modulanti sinusoidali sfasati di $120^\circ$ alla frequenza fondamentale $f_0$ desiderata. Il duty cycle $\delta$ del segnale PWM su ciascuna fase è:
+
+\begin{equation}
+\delta(t) = \frac{1}{2} \left[ 1 + M \sin(\omega_0 t + \phi) \right]
+\end{equation}
+
+dove $M = V_m / V_{tri}$ è l'indice di modulazione, rapporto tra l'ampiezza del segnale modulante e quella della portante triangolare. La tensione efficace della fondamentale in uscita vale $V_{ab,1} = M U_d / \sqrt{2} \cdot \sqrt{3}/2$.
+
+Esistono altre tecniche di modulazione avanzate, quali la \textit{Space Vector Modulation} (SVM), che permette di visualizzare nel piano complesso il vettore risultante dalla somma delle tensioni di pilotaggio, le quali sono strettamente correlate al campo magnetico rotante. Lo sviluppo delle tecniche di modulazione per la conversione DC-AC si basa sull'ottimizzazione dei tempi di commutazione in modo che la corrente di pilotaggio del motore risulti una copia amplificata del segnale di riferimento, minimizzando quindi le componenti armoniche. Si introducono inoltre ulteriori livelli di tensione ammissibili in uscita dell'inverter, effettuando quindi delle sottomodulazioni PWM entro livelli di tensione intermedi~\cite{luo2005}.
+
+\subsection{Current Source Inverter}
+
+In questo tipo di inverter è proprio la corrente iniettata nel carico ad essere modellata direttamente sotto forma di segnale PWM. È quindi la tensione a presentare forme d'onda arbitrarie in funzione del carico, con andamento prevalentemente sinusoidale.
+
+\section{Generazione di armoniche}
+
+Tensioni e correnti armoniche della frequenza di rete (50\,Hz) sono generate da carichi non-lineari connessi alla rete di distribuzione. Se la loro somma supera un certo limite, queste possono causare dei problemi non trascurabili agli impianti collegati alla rete. I carichi non-lineari più comuni sono i dispositivi di avviamento dei motori, i VFD, computer e periferiche, l'illuminazione elettronica, le saldatrici e gli UPS (\textit{Uninterruptible Power Supply}).
+
+Gli effetti delle armoniche sono di surriscaldare i trasformatori, i cavi, i generatori, i condensatori di rifasamento. L'illuminazione potrebbe lampeggiare, gli interruttori differenziali scattare improvvisamente, i computer potrebbero guastarsi e la strumentazione di misura fornire false letture.
+
+Se la causa diretta dei vari sintomi precedentemente elencati è ignota, si deve andare ad indagare sulla distorsione armonica nell'impianto di distribuzione locale. Si noti che in generale le armoniche di corrente sono maggiori per carichi e motori di taglia maggiori. Le armoniche di corrente diminuiscono con filtri DC o AC migliori (induttanza serie maggiore) e maggiore è il numero di impulsi del raddrizzatore. Per impulsi si intende la semionda raddrizzata disponibile a valle del raddrizzatore. Un raddrizzatore trifase a ponte intero, visto lo sfasamento di $120^\circ$ tra le fasi di alimentazione, è tale da generare sei impulsi in uscita (due per fase entro il periodo della sinusoide). Un'alimentazione realizzata ad-hoc, in modo che vi siano sei fasi con $60^\circ$ di fase relativa è tale per cui si hanno dodici impulsi. Questo aumenta sensibilmente la stabilità della tensione raddrizzata, che viene a presentare un'oscillazione residua (\textit{ripple}, Figura~\ref{fig:rectifier_ripple}) di ampiezza minore ed a frequenza fondamentale maggiore (multipla), richiedendo quindi un filtraggio più blando.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{rectifier_ripple}
+\caption{Forme d'onda raddrizzate ideali per raddrizzatori a 6, 12 e 18 impulsi.}
+\label{fig:rectifier_ripple}
+\end{figure}
+
+Via via che si aumentano il numero di impulsi disponibili per il ponte raddrizzatore, si ha una cancellazione delle armoniche di basso ordine (Figura~\ref{fig:harmonics_order}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{harmonics_order}
+\caption{Armoniche per diversi raddrizzatori.}
+\label{fig:harmonics_order}
+\end{figure}
+
+La sostituzione dei diodi del raddrizzatore con tiristori (supportano potenze maggiori) è tale da introdurre picchi di tensione associati all'istante d'innesco di questi dispositivi. Questi raddrizzatori a fase (d'innesco dei tiristori) controllata sono tali da peggiorare il fattore di potenza fondamentale del carico, introducendo quindi correnti reattive maggiori e di conseguenza armoniche maggiori. Ciò nonostante, questi vengono usati in fase rigenerativa del motore per un flusso di potenza verso la rete di alimentazione. In effetti, scegliendo opportunamente la fase d'innesco dei tiristori è possibile invertire la polarità del potenziale raddrizzato, meccanismo necessario per la rigenerazione.
+
+Un raddrizzatore ad IGBT apporta maggiori benefici rispetto a quelli a fase controllata. Permettono anch'essi di selezionare la polarità del potenziale DC. Inoltre, consentono di controllare il fattore di potenza in modo da rifasare il carico~\cite{abb2011}.
