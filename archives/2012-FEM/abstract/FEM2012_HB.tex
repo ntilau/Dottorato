@@ -1,0 +1,33 @@
+\documentclass{fem2012}
+\special{papersize=8.5in,11in}
+
+\usepackage{times}
+
+\title{Harmonic Balance Domain Decomposition Finite Element \\ for Nonlinear Passive Microwave Devices Analysis}
+
+\author[afil1]{Laurent Ntibarikure}
+\author[afil1]{Giuseppe Pelosi}
+\author[afil1]{Stefano Selleri}
+
+\address[afil1]{Department of Electronics and Telecommunications, University of Florence, \\ Via di Santa Marta 3, 50139, Florence, 
+Italy}
+%\address[afil2]{International Workshop, 4-6 June Street, Estes Park, Colorado, eea@int-wshop.com}
+
+\begin{document}
+\begin{abstract}
+
+When high power densities are involved within passive microwave and millimeter-wave devices, materials may present a significant nonlinear behavior. A frequency domain analysis is sometimes preferable to a time-domain analysis, especially when steady-state fields are aimed at for a finite set of frequencies.
+Frequency domain finite element (FE) method provides an invaluable analysis tool for linear devices, but it fails when material properties present a dependence on the fields strength. To take into account of harmonic distortion that occurs in such a case, Harmonic Balance (HB) techniques may be used.
+
+The proposed method extends the previous work (G. Guarnieri, G. Pelosi, L. Rossi, and S. Selleri, ``A Domain Decomposition Technique for Efficient Iterative Solution of Nonlinear Electromagnetic Problems,'' IEEE Trans. Antennas Propag., vol. 58, no. 12, pp. 4090--4095, Dec. 2010) to include
+higher order harmonics. As a result, a global HB-FE system is assembled and
+solved iteratively, converging to the solution within a prescribed tolerance. Depending on the nonlinearity degree of the model, either Picard or relaxed iterations are used. 
+
+One or two fundamental frequency excitations have been investigated, the latter allowing to accurately compute third order intermodulation products. Coupling between harmonics is performed by testing the product of the nonlinear material property with the multiharmonic field amplitude (F. Bachinger, U. Langer, and J. Sch\"oberl, ``Numerical analysis of nonlinear multiharmonic eddy current problems,'' Numer. Math., vol. 100, no. 4, pp. 593-616, Jun. 2005). The material property can actually be expressed in terms of a sum of harmonics, being dependent on the multiharmonic field. The procedure of testing can be performed analytically for the single frequency excitation case, providing algebraic relations between first and higher order harmonics (S. Yamada, K. Bessho, and J. Lu,``Harmonic balance finite element method applied to nonlinear AC magnetic analysis,'' IEEE Trans. Magn., vol. 25, no. 4, pp. 2971-–2973, Jul. 1989). In case of multiple excitation frequencies impinging on the device, an analytic testing can become impractical. Hence, coupling coefficients have been computed by the use of the fast Fourier transform algorithm.
+
+A substructuring Domain Decomposition method has been applied to isolate unknowns contributing to nonlinear elements from those remaining linear, in order to limit the nonlinear solving loop to a smaller domain. Numerical simulations have been carried out to validate the technique and perform timings comparisons with the full domain HB-FE analysis.
+
+
+\end{abstract}
+
+\end{document}

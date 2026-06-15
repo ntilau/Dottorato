@@ -1,0 +1,88 @@
+17-Dec-2011
+
+Dear Dr. Selleri:
+
+Manuscript ID MWCL-11-0867 entitled "Efficient Harmonic Balance Analysis of Waveguide Devices with Nonlinear Dielectrics" which you submitted to the IEEE Microwave and Wireless Components Letters, has been reviewed.  The comments from reviewer(s) are included at the bottom of this letter.
+
+In view of the criticisms of the reviewer(s) and notes from the AE/EIC found at the bottom of this letter, I must decline the manuscript for publication in the IEEE Microwave and Wireless Components Letters at this time.  However, a new manuscript may be submitted which takes into consideration these comments.
+
+Please note that resubmitting your manuscript does not guarantee eventual acceptance, and that your resubmission will be subject to re-review by the reviewer(s) before a decision is rendered.
+
+You will be unable to make your revisions on the originally submitted version of your manuscript.  Instead, revise your manuscript using a word processing program and save it on your computer.
+
+Authors should upload the following three documents:
+
+1) Resubmitted manuscript (no colored markings)
+
+2) Responses to comments: When submitting your resubmitted manuscript, it is strongly recommended that you respond to the comments made by the reviewer(s) in the space provided or by uploading a seperate file named "response to reviewers." You can use this space to document any changes you make to the original manuscript. In order to expedite the processing of the resubmitted manuscript, please be as specific as possible in your response to the reviewer(s).
+
+3) Resubmitted manuscript with colored markings: Please kindly provide the explanations of how the new manuscript is revised in response to reviewers' comments by showing evidence of changes marked in different colors.
+
+Once you have revised your manuscript, go to http://mc.manuscriptcentral.com/mwcl-ieee  and login to your Author Center.  Click on "Manuscripts with Decisions," and then click on "Create a Resubmission" located next to the manuscript number.  Then, follow the steps for resubmitting your manuscript.
+
+Because we are trying to facilitate timely publication of manuscripts submitted to the IEEE Microwave and Wireless Components Letters, your revised manuscript should be uploaded as soon as possible.  If it is not possible for you to submit your revision within a reasonable amount of time, we will consider your paper as a new submission.
+
+I look forward to a resubmission.
+
+Sincerely,
+Prof. C-K Clive Tzuang
+Editor in Chief, IEEE Microwave and Wireless Components Letters
+clivetzuang@ieee.org, cktzuang@yahoo.com.tw
+
+
+Editorial Notes from AE/EIC:
+This paper presents the combination of the FEM with the harmonic balance for the analysis of components, including nonlinear dielectrics. 
+
+The proposed approach is interesting and seems effective. 
+However, some issues and comments raised by the reviewers need to be clarified before the paper could be granted the final acceptance. 
+
+In particular, please pay particular attention to the comments of Reviewer #3, and provide a careful and rigorous assessment of the accuracy and efficiency given by the proposed method, not only in the 2D case but also for 3D structures. 
+
+Moreover, a validation of the results in comparison with other methods and/or analytical solutions is expected. (See comments from Reviewer 4.) 
+
+additional suggestions and comments:
+1. Please insert a space between number and units.
+2. Although Fig. 2, nearly identical to Fig. 7 of Ref. [4], was accepted in TAP, authors need to elaborate the filter description in its structural parameters and material constants, which are too difficult to follow.
+3. Please elaborate a bit more on how the Kerr-like permittivity comes into play using Ref. [9], which seems important in the nonlinear analysis.
+4. Is there any concern about the numerical convergence of the proposed method? How many harmonics are needed (in what capacity) for converged solutions in connection to the harmonic balance domain decomposition?
+5. How accurate is the proposed method?
+6. Is the proposed method free from numerical instability?
+7. What does the terminology mean, e.g., TE_n0 superscripted (a) or (b) in Fig. 5 (for n = 1, 3, 5)? Please explain why the higher-order modes at odd order prevail? 
+8. A big concerns still resides on no validation of the proposed method.
+9. Etc. 
+
+
+
+Reviewer(s)' Comments to Author:
+
+Reviewer: 1
+Comments to the Author
+Some minor comments are suggested to the author:
+Two books are referenced in the paper, [5] and [6]. I think the relevant pages should be included when a book is referenced, for example, [5, pp. xxx-yyy], [5, eq (X)] or [5, Ch X, pp. yy-zz]. See IEEE Editorial Style Manual, pp. 5.
+Page 2, below (4). e(s)rg and  e(c)rg are not defined.
+Page 3, Fig. 3. The curve for P=5 is disappeared, maybe it overlaps with P=3. 
+
+
+Reviewer: 2
+Comments to the Author
+The paper presents a method for efficient harmonic balance analysis. The key idea is to eliminate the degrees of freedom belonging to the linear part of the structure by using a Schur complement approach. This reduces the dimension of the nonlinear system of equations and thus accelerates its iterative solution. The method extends the approach of [4] by taking higher-order harmonics into account. The authors demonstrate the need for higher-order harmonics and the efficiency of the approach with a numerical example. 
+
+Minor remarks:
+- Can the authors comment on the application of their method to 3D problems? The number of boundary unknowns increases with rising dimension, and the Schur complement approach leads to dense submatrices. Is this an issue? If yes, can sparsification techniques be applied to reduce memory and computation overhead?
+- p. 3, reference [6]: “P. Silverster …” should read “P. Silvester …” 
+
+
+Reviewer: 3
+Comments to the Author
+This paper is an extension over the author's previous work reported in [4]. In [4], the domain decomposition together with the finite-element method is employed to solve EM problems with nonlinear materials. In this paper, harmonic balance is added. Basically, this paper is a hybridized harmonic balance, domain decomposition (DD), and finite-element method.
+
+The efficiency over conventional method should be compared in a more objective way. For solving (9), the Schur complement based DD technique is used. The Schur complement yields a dense matrix, while the original matrix is sparse. Although the dimension of the system matrix to be solved in a nonlinear fashion with an iterative technique is reduced, the matrix becomes dense. When comparing efficiency, was the time cost in generating the dense Schur complement matrix included? Or the CPU time considered is only for the cost after the reduced Schur complement is generated? It is not clear from the results reported in this paper. This should be made clear. If the time for generating the Schur complement is not included in studying the speedup of this method over conventional one, it should be included. 
+
+Because the Schur complement is a dense matrix, and the paper didn't employ any fast technique to solve this matrix, the application of the proposed method is very limited. Basically, when the number of unknowns is relatively large, the proposed method can be even slower than a conventional method that only needs to solve a sparse matrix.
+
+The other thing is the inconsistence between formulation and results. The formulation is based on vector basis functions and also for solving 3-D problems, while what is solved is a 2-D problem with node basis functions. The authors should make it clear about what is actually done. 
+
+
+Reviewer: 4
+Comments to the Author
+The paper is well written. It would be better if the results presented have some kind of validation using independent solutions (either numerical or experimental).

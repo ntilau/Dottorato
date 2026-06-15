@@ -1,0 +1,1220 @@
+%% bare_jrnl.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
+%%*************************************************************************
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+
+\documentclass[journal]{IEEEtran}
+%\documentclass[draftcls]{IEEEtran}
+
+
+%\usepackage[english]{babel} 
+\usepackage{soul}
+
+
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[journal]{../sty/IEEEtran}
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  \graphicspath{{img/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at: 
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+\usepackage[cmex10]{amsmath}
+\usepackage{amssymb}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+\usepackage{mdwmath}
+\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\usepackage[tight,footnotesize]{subfigure}
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+
+
+
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later 
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\usepackage[caption=false,font=footnotesize]{subfig}
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley and Jeff Goldberg.
+% This package may be useful when used in conjunction with IEEEtran.cls'
+% captionsoff option. Some IEEE journals/societies require that submissions
+% have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.3.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% For subfigure.sty:
+% \let\MYorigsubfigure\subfigure
+% \renewcommand{\subfigure}[2][\relax]{\MYorigsubfigure[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat/subfig command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a 
+% page by themselves.
+
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-ti-cal net-works se-mi-con-duc-tor}
+
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\usepackage{color}
+%\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+
+\usepackage{nicefrac}
+
+
+\begin{document}
+
+%\nocite{*}
+
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Harmonic Balance Analysis of Nonlinear Dielectrics in Waveguide Devices}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+\author{ \hl{???}
+        Laurent~Ntibarikure,~\IEEEmembership{Student 
+        Member,~IEEE,}
+		Giuseppe~Pelosi,~\IEEEmembership{Fellow,~IEEE,}
+		Lorenzo~Rossi,~%\IEEEmembership{Fellow,~IEEE,}
+        and~Stefano~Selleri,~\IEEEmembership{Senior~Member,~IEEE}
+        \hl{???}%<-this % stops a space 
+        \thanks{ \hl{?}L. Ntibarikure, G. Pelosi and S. Selleri are with the
+        Department of Electronics and Telecommunications, University of 
+        Florence, I-50139 Florence, Italy (e-mail: stefano.selleri@unifi.it).}
+       %}%
+		\thanks{\hl{?} L. Rossi} 
+	  }
+ 
+%\thanks{}%M. Shell is with the Department
+%of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
+%GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
+%\thanks{}%J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
+%\thanks{}}%Manuscript received April 19, 2005; revised January 11, 2007.}}
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+
+% The paper headers
+%\markboth{Journal of \LaTeX\ Class Files,~Vol.~6, No.~1, January~2007}%
+\markboth{IEEE MICROWAVE AND WIRELESS COMPONENTS LETTERS, VOL. X, NO. X, Month XXXX}%
+{odd page header}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2007 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+%\boldmath
+%The abstract goes here.
+The computation of high order harmonic components of the
+time-harmonic field originated in waveguide structures containing
+nonlinear dielectrics is addressed exploiting 
+Harmonic Balance and Finite Elements. The solution
+of the nonlinear system is handled either via Picard or relaxed iterations. 
+Being the nonlinear loop particularly time demanding, a domain
+decomposition method is proposed to speed-up the system solution by restricting
+the iteration loop to a small sub-domain.
+
+\end{abstract}
+% IEEEtran.cls defaults to using nonbold math in the Abstract.
+% This preserves the distinction between vectors and scalars. However,
+% if the journal you are submitting to favors bold math in the abstract,
+% then you can use LaTeX's standard command \boldmath at the very start
+% of the abstract to achieve this. Many IEEE journals frown on math
+% in the abstract anyway.
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+% IEEEtran, journal, \LaTeX, paper, template.
+\hl{Harmonic balance (Harmonic analysis) }, finite element methods, \hl{domain decomposition method} (si ritrova in diversi articoli),
+nonlinear media, waveguide filters
+\end{IEEEkeywords}
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+% The very first letter is a 2 line initial drop letter followed
+% by the rest of the first word in caps.
+% 
+% form to use if the first word consists of a single letter:
+% \IEEEPARstart{A}{demo} file is ....
+% 
+% form to use if you need the single drop letter followed by
+% normal text (unknown if ever used by IEEE):
+% \IEEEPARstart{A}{}demo file is ....
+% 
+% Some journals put the first two words in caps:
+% \IEEEPARstart{T}{his demo} file is ....
+% 
+% Here we have the typical use of a "T" for an initial drop letter
+% and "HIS" in caps to complete the first word.
+%\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
+%for IEEE journal papers produced under \LaTeX\ using
+%IEEEtran.cls version 1.7 and later.
+% You must have at least 2 lines in the paragraph with the drop letter
+% (should never be an issue)
+%I wish you the best of success.
+%\hfill mds
+ %\hfill January 11, 2007
+% 
+\IEEEPARstart{T}{oday}'s microwave and millimeter wave passive devices design
+requires, when high power densities are involved, the modeling of material
+nonlinear properties to accurately predict the steady state electromagnetic field.
+
+Among the available techniques, the most immediate would be an explicit
+time-domain approach, which indeed often results to be computationally
+prohibitive \cite{deGersem2001}. An alternative is the time-harmonic approach,
+which can be based on the finite element (FE) solution of the frequency domain
+partial differential equation (PDE), obtaining the field quantities at a given
+frequency. Unfortunately, a single frequency is not sufficient to include all
+relevant phenomena, high order harmonics being generated from the interaction
+of the electromagnetic field with the nonlinear materials. Incorporating a
+larger set of harmonics in the FE formulation by using the Harmonic Balance
+Finite Element (HBFE) method \cite{Yamada1988,Yamada1989}, also known as Multi-Harmonic Finite Element
+method \cite{Copeland2010, Bachinger2005, Kolmbauer2009}, provides a fast and
+accurate solution to the problem as long as the harmonics required to
+effectively represent the field is not excessive. 
+
+The nonlinearity of the PDE is tackled by an iterative solution of a spatially
+and spectrally coupled large-scale linear system in which the nonlinear material
+properties are computed at each iteration on the basis of the previous
+iterations field values. Iteration stops when the computed solution converge,
+within a prescribed tolerance, to the sought solution.
+An algebraic Domain Decomposition technique as proposed in \cite{Guarnieri2010}
+improves computational timings, especially when the region occupied by
+nonlinear materials is rather small. But in \cite{Guarnieri2010} no Harmonic
+Balance was present and hence only the fundamental frequency was computed.
+
+In this letter, we expand \cite{Guarnieri2010} by implementing a full
+harmonic balance domain decomposition finite element (HBDDFE) method. To
+prove the capability and efficiency of the method the analysis of
+a waveguide filter containing dielectrics presenting a nonlinear, isotropic,
+permittivity is shown.
+
+In following  section \ref{sec:formulation}, the HBDDFE formulation is
+presented. In section \ref{sec:results}, simulation results for a broadband
+E-plane bandpass filter with a dielectric slab exhibiting a Kerr-type
+nonlinearity are shown, and the performances of the HBDDFE
+are discussed.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formulation}
+\label{sec:formulation}
+
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=.9\columnwidth]{geometry}
+\caption{Generic multiport device where the total domain $\Omega$ is subdivided
+into a large, linear subdomain $\Omega_1$ and a smaller subdomain $\Omega_2$.}
+\label{fig:geometry}
+\end{figure}
+
+\par The formulation given in this section holds for a generic
+multiport device as shown in Fig. \ref{fig:geometry}. The domain $\Omega$, with
+boundary $\Gamma$, can be either defined on $\mathbb R^2$ or $\mathbb R^3$. For
+the sake of simplicity, the examples presented in the next section are analyzed,
+without loss of generality, in $\mathbb R^2$. $\Omega$ is divided into a large
+part, $\Omega_1$, comprising only linear media, and a small part, $\Omega_2$,
+comprising all nonlinear media, with $\Omega = \Omega_1 \cup \Omega_2$ and
+$\Omega_1 \cap \Omega_2 = \emptyset$.
+
+The permittivity in $\Omega$ can be expressed as 
+%
+\begin{equation}
+\varepsilon_r(\vec{E}(\vec{r}),\vec{r})\!=\! 
+\begin{cases}
+\bar{\varepsilon}_r(\vec{r}), & \vec{r} \in \Omega_1 \\
+\tilde{\varepsilon}_r(\vec{E}(\vec{r}), \vec{r}) \!=\!
+\bar{\varepsilon}_r(\vec{r}) \!+\! \mathcal{L}(\vec{E}(\vec{r})), & \vec{r} \in
+\Omega_2
+\end{cases}
+\end{equation} 
+
+\noindent where $\vec{E}(\vec{r})$ is the electric field in the generic point
+$\vec{r}$ and $\mathcal{L}(\cdot)$ denotes a generic scalar operator describing the
+nonlinear behavior \cite{Guarnieri2010}. 
+
+The electric field satisfies, within $\Omega$, the vector Helmholtz equation
+%
+\begin{equation}
+\label{eq:helmholtz}
+\nabla \times \left ( \frac{1}{\mu_r} \nabla \times \vec{E}(\vec{r}) \right )  - {k_0}^2 \varepsilon_r \left(\vec{E}(\vec{r}), \vec{r} \right) \vec{E}(\vec{r}) = 0
+\end{equation} 
+
+\noindent with suitable boundary conditions on $\Gamma$, being $k_0$ the free
+space wavenumber. For the example shown in section \ref{sec:results}, $\Gamma$
+comprises a part $\Gamma_0$ which will be considered perfect electric conductor, and $L$ parts $\Gamma_l$
+corresponding to the ports, where a modal expansion of the field is enforced \cite{Pelosi2009}.
+
+In a standard FE Galerkin framework the domain $\Omega$ is
+discretized into a set of non overlapping finite elements and the electric
+field is approximated as a linear combination of vector basis functions $\boldsymbol{\alpha}_n$
+%
+\begin{equation}\label{e:femexpansion}
+\vec{E}(\vec{r})  = \sum_{n=1}^N E_n \boldsymbol{\alpha}_n(\vec{r})
+\end{equation} 
+
+Then by testing \eqref{eq:helmholtz} over $\Omega$ with weighting functions
+ $\boldsymbol{\alpha}_m$, chosen equal to the bases, the following weak form is
+ obtained:
+%
+\begin{multline}\label{eq:fem}
+\int_\Omega \nabla \times \vec{W}_m (\vec{r}) \cdot \frac{1}{\mu_r} \nabla \times \vec{E}(\vec{r}) \ d\Omega \\
+- k_0^2 \int_\Omega  \vec{W}_m (\vec{r}) \cdot \varepsilon_r (\vec{E}(\vec{r}), \vec{r}) \vec{E}(\vec{r}) \ d\Omega \\
++ \oint_{\Gamma_0} \vec{W}_m (\vec{r}) \cdot \hat{n} \times \frac{1}{\mu_r} \nabla \times \vec{E}(\vec{r}) \ d\Gamma = 0
+\end{multline} 
+
+%%%%% HBFE  %%%%%
+
+The multi-harmonic dependence in the HBFE method is introduced by approximating
+the electric field as \cite{Bachinger2005}
+%
+\begin{equation} \label{eq:field}
+\vec{\hat{E}}(\vec{r}, t) = \sum^P_{p=1} \vec{E}_{p}^{(s)}(\vec{r}) \sin(p
+\omega_0 t) + \vec{E}_p^{(c)}(\vec{r}) \cos(p \omega_0 t)
+\end{equation} 
+
+\noindent where $\omega_0$ is the fundamental angular frequency and, here and in
+the following, the hat over a quantity denotes its approximated value given by
+the truncated Fourier series. The Fourier expansion is devoid of a dc-term as a
+static field does not represent a solution to \eqref{eq:helmholtz} for $k_0 >
+0$. $\vec{E}_{p}^{(s)}$ and $\vec{E}_{p}^{(c)}$ are the harmonic complex
+amplitudes that expand the field at $p\omega_0$ and hence they must individually
+satisfy \eqref{eq:helmholtz} with $k_p=pk_0$. This is done in the FE framework
+by using the expasion \eqref{e:femexpansion} for each coefficient $\vec{E}_{p}^{(s)}$ and
+$\vec{E}_{p}^{(c)}$.
+
+The scalar relative permittivity can also be approximated as a truncated Fourier series 
+%
+\begin{eqnarray} \label{eq:eps}
+\hat{{\varepsilon}}_r(\vec{E}(\vec{r}), \vec{r}, t) = {\varepsilon}_{r_0} + \sum^K_{k=1} {\varepsilon}_{r_k}^{(s)} \sin(k \omega t) + {\varepsilon}_{r_k}^{(c)} \cos(k \omega t)
+\end{eqnarray} 
+
+\noindent and the coefficients of the expansion are given by
+\begin{align} \label{eq:epsCoeffs}
+{\varepsilon}_{r_{0}} &=  \frac{\omega}{2\pi}\int_0^{\frac{2\pi}{\omega}}
+{\varepsilon}_r(\vec{E}(\vec{r}), \vec{r}) \ dt \nonumber \\
+{\varepsilon}_{r_{k}}^{(s)} &=  \frac{\omega}{\pi}\int_0^{\frac{2\pi}{\omega}}
+{\varepsilon}_r(\vec{E}(\vec{r}), \vec{r}) \sin(k \omega t) \ dt \\ 
+{\varepsilon}_{r_{k}}^{(c)} &=  \frac{\omega}{\pi}\int_0^{\frac{2\pi}{\omega}} 
+{\varepsilon}_r(\vec{E}(\vec{r}), \vec{r}) \cos(k \omega t) \ dt
+\nonumber 
+\end{align} 
+
+The orders of the approximations $P$ and $K$ reflects on the accuracy
+of the solution and must be carefully chosen on the specific device
+analyzed and on the intensity of the incident field. These can be set
+automatically in the algorithm by selecting an appropriate convergence criterion
+on the power associated to the fundamental frequency as the number of harmonic
+coefficients is increased \cite{Gyselinck2002}.
+
+In a conventional, linear, FE approach discretizaton of \eqref{eq:fem} via
+\eqref{e:femexpansion} leads to a system:
+%
+\begin{equation}\label{e:plainfem}
+\begin{bmatrix}
+a_{11} & a_{12} & \ldots & a_{1N} \\
+a_{21} & a_{22} & \ldots & a_{2N} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{N1} & a_{N2} & \ldots & a_{NN} \\
+\end{bmatrix}
+\begin{bmatrix}
+E_1\\
+E_2\\
+\vdots\\
+E_N
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_1\\
+b_2\\
+\vdots\\
+b_N
+\end{bmatrix}
+\end{equation}
+
+\noindent where $a_{ij}$ are built by assembling the integrals in \eqref{eq:fem}
+on an element-by element basys \cite{Pelosi2009}. In the present case, on the
+other hand, by substituting to $\vec{E}(\vec{r})$ and
+${\varepsilon}_r(\vec{r})$ their respective harmonic approximations $\vec{\hat{E}}(\vec{r}, t)$ and
+$\hat{{\varepsilon}}_r(\vec{r}, t)$ in \eqref{eq:fem}, and by performing
+a further testing by multiplying it by $\sin(p \omega t)$ or
+$\cos(p \omega t)$, $p = 1 \dots P$, and integrating over the time period of the fundamental $\left [
+0,\frac{2\pi}{\omega} \right ]$  the following large linear system is
+obtained:
+%
+\begin{equation}\label{e:HBfem}
+\begin{bmatrix}
+[A]_{11} & [A]_{12} & \ldots & [A]_{1N} \\
+[A]_{21} & [A]_{22} & \ldots & [A]_{2N} \\
+\vdots & \vdots & \ddots & \vdots \\
+[A]_{N1} & [A]_{N2} & \ldots & [A]_{NN} \\
+\end{bmatrix}
+\begin{bmatrix}
+[E]_1\\
+[E]_2\\
+\vdots\\
+[E]_N
+\end{bmatrix}
+=
+\begin{bmatrix}
+[b]_1\\
+[b]_2\\
+\vdots\\
+[b]_N
+\end{bmatrix}
+\end{equation}
+
+\noindent which has formally the same structure as \eqref{e:plainfem} but in
+which the genric entries are themselves matrices in the form:
+%
+\begin{equation}\label{e:HBfemmn}
+[A]_{mn}=
+\begin{bmatrix}
+a_{mn}^{(1s1s)} & a_{mn}^{(1s1c)} & \ldots &  a_{mn}^{(1sPc)} \\
+a_{mn}^{(1c1s)} & a_{mn}^{(1c1c)} & \ldots &  a_{mn}^{(1cPc)} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{mn}^{(Pc1s)} & a_{mn}^{(Pc1c)} & \ldots &  a_{mn}^{(PcPc)}
+\end{bmatrix}
+\end{equation}
+\begin{equation} 
+[E]_m = 
+\begin{bmatrix}
+E_{n}^{(1s)} &
+E_{n}^{(1c)} &
+\ldots &
+E_{n}^{(Pc)}
+\end{bmatrix}^\text{T}
+\end{equation}
+\begin{equation} 
+[b]_n = 
+\begin{bmatrix}
+b_{n}^{(1s)} &
+b_{n}^{(1c)} &
+\ldots &
+b_{n}^{(Pc)}
+\end{bmatrix}^\text{T}
+\end{equation}
+
+\indent where superscript $(ps)$ or $(pc)$ indicates that the corresponding
+entry was computed by testing \eqref{eq:fem} with $\sin(p \omega t)$ or
+$\cos(p \omega t)$, respectively.
+
+The product that occurs in the second integral of \eqref{eq:fem}, between the
+approximated field and the permittivity, induces coupling between the harmonic
+components which reflects on non-diagonal matrices $[A]_{mn}$. However, as the
+PDE we seek to solve is free of first order time derivative, there is no 
+coupling between $\vec{E}_{n}^{(ps)}$ and $\vec{E}_{n}^{(pc)}$. Thus, we may
+retain either the sine or the cosine harmonic function to excite the
+electromagnetic device and to express the multi-harmonic behavior of the field,
+halving in such a way the system dimensions and leading to an $NP$ order
+system.
+
+The nonlinearity is finally handled via a
+relaxed iteration. As a starting point a null electric field is assumed,
+$[E]^0$ and computing the pertinent system matrix $[A]^0=[A_{([E]^0)}]$ and
+known term $[b]^0=[b_{([E]^0)}]$ and the system $[A]^0 [E]^1 =
+[b]^0$ solved. The newly computed field $[E]^1$ can now be used to update system
+matrix and known term and carry on the following relaxed iteration:
+%
+\begin{equation} \label{eq:lastLinearSystem}
+[A]^{q-1} [E]^{q} = [b]^{q-1}
+\end{equation}
+
+\noindent with 
+%
+\begin{align}
+[A]^{q-1} &= [A_{(\gamma [E]^{q-1} + (1-\gamma) [E]^{q-2})}] \\
+[b]^{q-1} &= [b_{(\gamma [E]^{q-1} + (1-\gamma) [E]^{q-2})}]
+\end{align}
+
+\noindent with $q \geq 2$ and
+$\gamma\in(0,1]$. $\gamma=1$ gives the standard Picard iteration \cite{Guarnieri2010}. Highly nonlinear materials and high intensity impressed fields may hamper the convergence of the nonlinear iteration, due to
+the oscillation of the solutions around the expected values. Lowering the value
+of $\gamma$ has the effect to damp that oscillation, hence rendering the
+iteration more robust but inevitably reducing the convergence rate \cite{Silvester1997}.
+
+The process is repeated until the relative error between the updated solution
+and the previous one, in the sense of the Euclidean norm, is less than a
+prescribed value $\tau$:
+%
+\begin{equation}
+\frac{\|[E]^{q} - [E]^{q-1} \|}{\| [E]^{q} \|} \leq \tau
+\end{equation}
+
+The order of the resulting HBFE system is $N P$. In practical analyses, this
+number can become considerable, and, since the
+solutions have to be refined iteratively, building at each step a new linearized
+system, computing time can become too high.
+
+To enhance the computational efficiency, a substructuring domain decomposition
+approach is here proposed \cite{Saad2000, Toselli2005, Guarnieri2009,
+Guarnieri2010}. The multi-harmonic unknowns vector $[E]$ defined by the HBFE method
+over $\Omega$ can be split into two vectors $[E^{(1)}]$ and $[E^{(2)}]$
+containing the unknowns belonging to interior points in $\Omega_1$ and
+$\Omega_2$, respectively. Unknowns belonging to the boundaries
+$\Gamma\cup\Gamma_{12}$ are placed in a third vector $[E^c]$. The HBFE system
+can then be recast in the following HBDDFE form:
+%
+\begin{equation}\label{eq:DD}
+\begin{bmatrix}
+ [M^{(1)}] &  0  &  [P^{(1)}] \\
+ 0  &  [M^{(2)}]^{q-1} & [P^{(2)}]^{q-1} \\
+ [Q^{(1)}] & [Q^{(2)}]^{q-1} & [C]^{q-1}
+\end{bmatrix} 
+\begin{bmatrix}
+{[E^{(1)}]^{q}} \\
+{[E^{(2)}]^{q}} \\
+{[E^{(c)}]^{q}}
+\end{bmatrix} 
+=
+\begin{bmatrix}
+{[b^{(1)}]} \\
+{[b^{(2)}]}^{q-1} \\
+{[b^{(c)}]}^{q-1}
+\end{bmatrix} 
+\end{equation}
+
+\noindent where $[M^{(1)}]$ contains the HBFE coefficients of the linear system
+related to the unknowns $[E^{(1)}]$ fully internal to $\Omega_1$, hence with
+null harmonic coupling coefficients. $[M^{(2)}]$ contains coefficients for the
+nonlinear sub-domain $\Omega_2$. ${[P^{(\cdot)}]}$ and ${[Q^{(\cdot)}]}$
+represent couplings between the interior unknowns and the ones on the
+boundaries which are collected in $[E^{(c)}]$. 
+
+By using the Schur complement concept, constructed with a Gauss elimination-type
+strategy, the boundary unknowns $[E^{(c)}]^{q}$ of \eqref{eq:DD}, and hence the
+generalized scattering matrix of the device, can be retrieved 
+\cite{Guarnieri2009, Guarnieri2010}
+
+Hence, in order to solve the HBDDFE system and compute the steady state field,
+every single submatrix is assembled at first sight, then, within the iteration
+loop, only the submatrices related to $\Omega_2$ and its boundary are to be
+updated. The efficiency of this DD technique relies on the fragmentation of the
+matrices and the subsequent computation of partial solutions. When the number
+of coefficients related to the nonlinear media is small, noticeable
+improvements can be achieved.
+
+\section{Numerical Results}
+\label{sec:results}
+
+\begin{figure}[t!]
+\centering
+\includegraphics[width=\columnwidth]{bilat}
+\caption{Cross section of a broadband E-plane bandpass filter realized in an empty WR6 rectangular waveguide \cite{Bui1984}. Measures are given in $\mu{m}$.}
+\label{fig:bilat}
+\end{figure}
+%The permittivity of the dielectric is $\varepsilon_r = 2.1$ and $\alpha_2 = 1.625 \ 10^{-10} \ {\mathrm{m}^2}/{\mathrm{V}^2}$.
+
+In this section, the analysis of a millimeter wave broadband filter \cite{Bui1984} is performed and the computational results are shown. The filter is realized within a standard WR6 waveguide by properly designed metalizations on a $6 040.5 \ \mu{m}$ long dielectric slab, mounted along the E-plane at the middle of the width range. A sketch of the H-plane cross section of the filter, plane of the performed 2D HBFE analysis, is shown in Fig. \ref{fig:bilat}. First order nodal elements are used and the domain discretization is such that 2470 degrees of freedom are obtained, 42 belonging to the nonlinear subdomain $\Omega_2$, 456 to the boundaries and the remaining 1972 to the linear subdomain $\Omega_1$. The metalizations are considered perfectly conducting, thus imposing the appropriate Dirichelet conditions. The continuity of the field at the ports is imposed through a modal expansion which, for the geometry of the problem, consists of $\mathrm{TE}_{n0}$ modes, $n \in \mathbb{Z},$ where $n \leq 10$ have been chosen. The incident field at Port 1 is only of a $\mathrm{TE}_{10}$ mode and $\mathrm{E}_\mathrm{i}$ is the associated electric field maximum amplitude.
+
+For the example of section \ref{sec:results}, $\tau = 10^{-6}$ have been chosen.
+
+The dielectric, enclosed in $\Omega_2$, presents a Kerr-type nonlinearity such that \cite{Yatsyk2006}
+\begin{equation}
+\tilde{\varepsilon}_r(\vec{E}(\vec{r}), \vec{r}) = \bar{\varepsilon}_r(\vec{r}) + \alpha_2 \ |\vec{E}(\vec{r})|^2, 
+\qquad \vec{r} \in \Omega_2
+\end{equation}
+where $\bar{\varepsilon}_r(\vec{r}) = 2.1$ and $\alpha_2$ is chosen of $1.625 \ 10^{-10} \ {\mathrm{m}^2}/{\mathrm{V}^2}$ according to \cite{Ma1997}. The Kerr-like behavior of the permittivity induces the generation of odd order harmonics, thus the even ones have been neglected in the truncated Fourier expansion. Furthermore, as we choose a sinusoidal excitation, only $\sin(m \omega t)$ related coefficients of the electric field are retained. 
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{spectrumNHarm1}
+\caption{Behavior of the $\mathrm{TE}_{10}$ spectral response as the number of harmonics retained for the HBFE increases ($\mathrm{E_i = 10kV/m}$).}
+\label{fig:spectrumNHarm}
+\end{figure}
+
+We first analyze the effect of the number of harmonics retained on the filter's spectral response as shown in Fig. \ref{fig:spectrumNHarm}.  For the nonlinearity degree represented by $\mathrm{E_i} = $10 kV/m and the chosen $\alpha_2$, the Picard iteration was sufficient to tackle the iteration loop. As we can see, the inclusion of the $3^\mathrm{rd}$ harmonic is crucial for proper bandwidth evaluation of the device. The field distribution within the device at 146 GHz, $3^\mathrm{rd}$ and $5^\mathrm{th}$ harmonics are shown in Fig. \ref{fig:Fields}.
+
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{Fields}
+\caption{$|\mathrm{E}_y|$ distribution within the filter at fundamental ($f_0 =$ 146 GHz), $3^\mathrm{rd}$ and $5^\mathrm{th}$ order harmonics ($\mathrm{E_i = 10 kV/m}$).}
+\label{fig:Fields}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{harmSpectrum}
+\caption{GSM ...  $\mathrm{E_i = 10 kV/m}$.}
+\label{fig:harmSpectrum}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{spectrumS21a}
+\caption{$S_{21}$ amplitude responses of the nonlinear filter given for several values of $\mathrm{E_i}$ compared to the linear case. The field is approximated up to the $5^\mathrm{th}$ harmonic. }
+\label{fig:spectrum}
+\end{figure}
+
+To see whether the nonlinear dielectrics influences the spectral response of the device, the intensity of the field has been set to 5 kV/m, 10 kV/m and 15 kV/m corresponding to 18 mW, 72 mW and 162 mW of incident power, respectively, which are common power values encountered in D-band applications \cite{Porterfield2003}. The results, compared to those of a linear device ($\alpha_2 = 0$), are shown in Fig. \ref{fig:spectrum}. The field is approximated up to the $5^\mathrm{th}$ harmonic. There is an evident shift the bandpass range to lower frequencies as higher power densities are involved. $\mathrm{E_i}=$15 kV/m has required a relaxed iteration with $\gamma = 0.1$. In this case, the abrupt variation of $|S_{21}|$ around 139.5 GHz points out that the harmonic order used is not sufficient to accurately analyze the device. Furthermore, a finer mesh would be necessary to validate the inclusion of higher order harmonics.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{acceleration1}
+\caption{Acceleration spectrum obtained for a HBFE systems of several harmonic orders. The computations are made for $\mathrm{E_i = 10 kV/m}$.}
+\label{fig:acceleration}
+\end{figure}
+
+The efficiency of the DD technique versus the full domain solution is analyzed introducing the \textit{acceleration} 
+\begin{equation}
+a \backsimeq \frac{I \cdot (T_{\Omega})}{T_{\Omega_1} + I \cdot (T_{\Omega_2} + T_{\Gamma})}
+\end{equation}
+where $I$ is the number of iterations required by the nonlinear loop and $T_{\Omega}$, $T_{\Omega_1}$, $T_{\Omega_2}$ and $T_{\Gamma}$ are assembling and solving times. Fig. \ref{fig:acceleration} depicts the spectral acceleration obtained increasing the number of harmonics for $\mathrm{E_i = 10 kV/m}$. In this case, as stated before, at least a $3^\mathrm{rd}$ harmonic is required for accurate solution. In the average, higher order HBFE systems have lower acceleration, the matrices dimensions related to nonlinear media increasing. With a $3^\mathrm{rd}$ order system, the acceleration varies in the range [2.51, 9.15] such that the overall acceleration is of 4.18. In this case, the DD HBFE solution uses 24\% of the time required by the full domain HBFE solution. 
+
+\section{Conclusion}
+An Harmonic Balance approach to the FE solution of nonlinear dielectrics filled waveguide devices has been presented and the accuracy of the multi-harmonic solution discussed.% Depending on the degree of nonlinearity, which is a function of the field intensity and the material characteristics, high order harmonics may be required to accurately represent the field \hl{....}
+A domain decomposition technique has been used to speed-up the computations and the efficiency of the algorithm has been evaluated.
+
+
+%The harmonic power all over the device and its convergence as the number of harmonics is increased is shown in Fig., which emphasizes that as we increase the number of harmonics, the lower order ones, especially the fundamental, present a slight variation. This allows for limiting the order of the HBFE system.
+
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=\columnwidth]{convergence}
+%\caption{Converging behavior of the power associated to the harmonics as the number of the harmonics employed increases when Pin = 200 mW at 150 GHz.}
+%\label{fig:spectrum}
+%\end{figure}
+%
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=\columnwidth]{convergencea}
+%\caption{Converging behavior of the power associated to the harmonics as the number of the harmonics employed increases when Pin = 72 mW at 150 GHz.}
+%\label{fig:spectrum}
+%\end{figure}
+
+
+
+
+
+%- The Domain decomposition technique induces noticeable improvements in the simulation timings, especially for high number of harmonics
+%
+%As we can show
+
+
+
+
+%\_subsection{Subsection Heading Here}
+%Subsection text here.
+
+% needed in second column of first page if using \IEEEpubid
+%\IEEEpubidadjcol
+
+%\_subsubsection{Subsubsection Heading Here}
+%Subsubsection text here.
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the 
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals use top floats exclusively.
+% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
+% floats. This can be corrected via the \fnbelowfloat command of the
+% stfloats package.
+
+
+
+%\ section{Conclusion}
+
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+
+%\appendices
+%\_section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
+
+% you can choose not to have a title for an appendix
+% if you want by leaving the argument blank
+%\_section{}
+%Appendix two text goes here.
+
+
+% use section* for acknowledgement
+%\_section*{Acknowledgment}
+
+
+%The authors would like to thank...
+
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+%\begin{thebibliography}{1}
+%
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%
+%\end{thebibliography}
+\bibliographystyle{IEEEtran}	% (uses file "plain.bst")
+\bibliography{HBFEDD}
+
+
+% biography section
+% 
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+
+%\begin{IEEEbiography}{Michael Shell}
+%Biography text here.
+%\end{IEEEbiography}
+
+% if you will not have a photo at all:
+%\begin{IEEEbiographynophoto}{John Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+%\begin{IEEEbiographynophoto}{Jane Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+
+% that's all folks
+\end{document}
+
+

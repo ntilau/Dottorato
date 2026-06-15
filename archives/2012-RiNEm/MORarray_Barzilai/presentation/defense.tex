@@ -1,0 +1,754 @@
+\documentclass[11pt]{beamer}
+
+\include{custom}
+
+\title[FE-MOR for Phased Array Antennas]{\textsf{\Large{Model Order Reduction in Finite Element\\ Analysis of Phased Array Antennas}}}
+\author[Laurent Ntibarikure]{Laurent Ntibarikure} %\thanks{Ciao}
+\date[\today]{}
+\institute[University of Florence]{}
+\logo{\includegraphics[width=12.62cm]{logoUnifiSfondo.pdf}}
+\subject{Model Order Reduction in Finite Elements Analysis of Large Phased Array Antennas}
+
+\setbeamertemplate{footline}[frame number]
+
+\begin{document}
+
+\frame{
+\vspace{-.5cm}
+\hspace{-.6cm}
+\includegraphics[width=1cm]{unifiLogo.pdf}
+\maketitle
+\vspace{-2cm}
+\begin{center}
+\scriptsize{Department of Electronics and Telecommunications, University of Florence} \\
+\scriptsize{via di Santa Marta 3, I-50139 Florence, Italy}\\[.2cm]
+\end{center}
+}
+
+\section{Motivation}
+\subsection{Numerical analysis of electrically large phased arrays}
+
+%\frame{
+%\frametitle{2D phased array beamsteering}
+%\vspace{-.2cm}
+%\centering
+%\includegraphics[width=6cm]{phasedArray1} \\
+%\tiny Planar array of 12 x 16 printed folded dipoles
+%}
+%
+%\frame{
+%\frametitle{2D phased array beamsteering}
+%\vspace{-.2cm}
+%\centering
+%\includegraphics[width=6cm]{phasedArray2} \\
+%\tiny Planar array of 12 x 16 printed folded dipoles
+%}
+%
+%\frame{
+%\frametitle{2D phased array beamsteering}
+%\vspace{-.2cm}
+%\centering
+%\includegraphics[width=6cm]{phasedArray3} \\
+%\tiny Planar array of 12 x 16 printed folded dipoles
+%}
+%
+%\frame{
+%\frametitle{2D phased array beamsteering}
+%\vspace{-.2cm}
+%\centering
+%\includegraphics[width=6cm]{phasedArray4} \\
+%\tiny Planar array of 12 x 16 printed folded dipoles
+%}
+
+%% appl telecom
+\frame
+{
+  \frametitle{Phased arrays for radar and communication applications}
+\vspace{-.2cm}
+\begin{figure}
+\centering
+\begin{minipage}[l]{4cm}
+\begin{minipage}[t]{4cm}
+\centering
+\includegraphics[width=4cm]{Rat31} \\
+\tiny RAT 31 DL - SELEX Sistemi Integrati. D-band solid state phased array, 3D surveillance radar
+\end{minipage}
+\begin{minipage}[b]{4cm}
+\centering
+\includegraphics[width=4cm]{ThomsonMasterA} \\
+\tiny Thomson Master-T Radar - \textcopyright Thomson CSF Air Command and Control Systems
+\end{minipage}
+\end{minipage}
+\hspace{.8cm}
+%\begin{minipage}[l]{5cm}
+%\begin{minipage}[t]{5cm}
+%\centering
+%\includegraphics[width=3cm]{arrayDipSmart} \\
+%\tiny W. Mahler, F.M. Landstorfer, \quotes{Design and Optimisation of an Antenna Array for WIMAX Base Stations}, University of Stuttgart, Institute of Radio Frequency Technology
+%\end{minipage}
+%\begin{minipage}[b]{5cm}
+%\centering
+%\includegraphics[width=4cm]{planArrayAlcatel} \\
+%\tiny Active Antenna Arrays - Alcatel-Lucent Innovation Days – December 2008. BELL Labs Research Project
+%\end{minipage}
+%\end{minipage}
+%\hspace{.1cm}
+\begin{minipage}[l]{5cm}
+%\begin{minipage}[t]{4cm}
+\centering
+\includegraphics[width=5cm]{arrayEBG} \\
+\tiny P. Ratajczak, P. Brachat, J.M. Fargeas, \quotes{Adaptive Beam Steering Base Station Antenna: Performances Optimization of the Reconfigurable EBG Material} - France Telecom
+%\end{minipage}
+%\begin{minipage}[b]{5cm}
+%\centering
+%\includegraphics[width=4cm]{arrayEBGmod} \\
+%\tiny P. Ratajczak, P. Brachat, J.M. Fargeas EBG Base Station Antenna Model
+%\end{minipage}
+%\centering
+%\includegraphics[width=5cm]{arrayEBG} \\
+%\tiny Array planare di 12 x 16 dipoli ripiegati su supporto dielettrico
+\end{minipage}
+\end{figure}
+\begin{pgfpicture}{0cm}{0cm}{0cm}{0cm}
+ \pgfsetlinewidth{.25pt}%
+% \pgfsetendarrow{\pgfarrowtriangle{2pt}}%
+ \pgfline{\pgfxy(4.9,.6)}{\pgfxy(4.9,7)}
+\end{pgfpicture}
+}
+\frame{
+\frametitle{Numerical analysis of phased arrays: requirements}
+\begin{itemize}
+	\item Flexibility \\
+	\begin{itemize}
+		\item Arbitrary shape of radiating elements \\
+		\item Arbitrary material properties \\
+	\end{itemize}
+%\pause
+	\item High accuracy and reliability \\ 
+	\begin{itemize}
+		\item Full-wave solution of Maxwell's equations \\
+	\end{itemize}
+\end{itemize} \pause
+\begin{center}
+\vspace{-.3cm}
+$\Downarrow$ \\[.1cm] \alert{Finite Elements} discretization leading to \\
+a linear system of equations \\[.2cm] 
+\pause
+			%\hspace{1.3cm} (Sistema lineare) 
+%\begin{itemize}
+\begin{colorblock}{mycolor}{mycolor}{}
+\begin{itemize}
+\item Electrically large structures $\Rightarrow$ \alert{ $\mbf{10^5}$ - $\mbf{10^{8}}$ unknowns} !!!
+\item Solutions have to be computed \alert{for each scan angle} !!!
+\end{itemize}
+\end{colorblock}
+%\end{itemize}
+%\pause
+\end{center}
+%\vspace{-.2cm}
+%\makebox[10cm]{
+%\begin{colorblock}{mycolor}{mycolor}{}
+%5\begin{center}
+%	\acgrave{E} possibile \alert{ridurre la complessit\acgrave{a} del problema} mantenendo un adeguata accuratezza nel \itt{pattern} ? %  mantenendo un adeguata \alert{accuratezza nel \emph{pattern}} di radiazione al \alert{variare dell'angolo di scansione ?}fewferf
+%\end{center} 
+%\end{colorblock}
+}
+
+\subsection{Radiation model and Model Order Reduction}
+\frame{
+\frametitle{Radiation model and Model Order Reduction}
+\begin{itemize}
+%\item \alert{\itt{Pattern} di radiazione} (\itt{HPBW}, \textit{SLL}, polarizzazione, ...)
+%\item Polarizzazione del campo radiato % (componenti co- e cross-polari)
+%\item \alert{Mutui-accoppiamenti} tra elementi radianti (matrice di \itt{scattering}, eventuali angoli ciechi per strutture planari, ...) 
+%\item Vogliamo un \alert{modello di radiazione} che permetta, a seguito di una riduzione della complessit\acgrave{a},  di preservare le informazioni associate al \itt{pattern} di radiazione in scansione\\ \pause
+%\item \acgrave{E} necessario \alert{parametrizzare} tale modello, cio\acgrave{e} costruire un \alert{modello variabile nelle direzioni di scansione e in quelle di osservazione} che costituiscono il \itt{pattern} di radiazione
+\item Once reduced, the \alert{radiation model} must preserve the beam steering information \\[.5cm]
+
+\begin{colorblock}{mycolor}{mycolor}{}
+\begin{center}
+\alert{Model parameterization}:\\ The model is expressed in terms of the \underline{scan angle} (array excitation) and the \underline{look angle} (radiation pattern)
+\end{center} 
+\end{colorblock}
+
+\end{itemize}
+%\pause
+%\begin{colorblock}{mycolor}{mycolor}{}
+%\begin{center}
+
+%\end{center} 
+%\end{colorblock} \pause
+%\begin{center}
+%$\Downarrow$
+%\end{center}
+%\begin{colorblock}{mycolor}{mycolor}{}
+%\begin{center}
+%Diventa possibile andando a \alert{parametrizzare} il modello, creando quindi un \alert{modello variabile nelle direzioni di scansione e in quelle di osservazione} che costituiscono il \itt{pattern} di radiazione% nell'angolo di scansione}
+%\end{center} 
+%\end{colorblock}
+}
+
+\section{Radiation model for phased arrays}
+\subsection{Finite Element Method}
+\frame{
+  \frametitle{Finite elements formulation: near fields}
+\scriptsize
+\begin{columns}[cc]
+\column{7cm}
+\centering
+Solution of the \alert{wave equation for electric field}: \\[.2cm]
+\alert{$\nabla \times \frac{1}{\mu_r} \nabla \times \mbfit{E} - k_0^2\epsilon_r \mbfit{E} = 0$} \\ $k_0 = \omega \sqrt{\epsilon_0 \mu_0}$, \ $\zeta_0 = \sqrt{\frac{\mu_0}{\epsilon_0}}$ \\[0.2cm]
+nel dominio $\mrm{\Omega} \subset \mathbb{R}^3$ con contorno \\ $\mrm{\partial \Omega = \Gamma = \Gamma_E \cup \Gamma_{H} \cup \Gamma_{WG} \cup \Gamma_R}$ \\[.2cm] \pause
+\begin{itemize}
+ \item $\mrm{\Omega}_h = \bigcup_{m=1}^{M} \mrm{\Omega}_m \subset \mrm{\Omega}, \ \mrm{\Omega}_m \cap \mrm{\Omega}_n = \{ \varnothing \} \ \forall m \neq n $ \pause
+ \item $\tilde{\mbfit{E}} := \sum_{j=1}^N e_j \mbfit{w}_j, \ \ \mbfit{w}_j \in \mathcal{W} \subset \mathcal{H}(\mrm{curl;\mrm{\Omega}})$ \pause
+ \item %Galerkin projection:% $\Rightarrow$ equazione differenziale in forma debole
+%\\[.1cm] %\hspace{-.8cm}
+ $\int_{\mrm{\Omega}_h} \mbfit{w}_i \cdot \left ( \nabla \times \frac{1}{\mu_r} \nabla \times \tilde{\mbfit{E}} - k_0^2\epsilon_r \tilde{\mbfit{E}} \right ) d\mrm{\Omega} = 0$ \\ \pause
+
+\end{itemize}
+\column{5cm}
+%\vspace{-1cm}
+%\begin{tabular*}{\textwidth}[]{c}
+%Maxwell nel dominio della frequenza:\\[.1cm]
+%$\nabla \times \mbfit E = -j \omega \mbfit B$ \\
+%$\nabla \times \mbfit H = j \omega \mbfit D + \sigma \mbfit E$ \\[.2cm]
+%Relazioni costitutive del mezzo: \\[.1cm]
+%$\mbfit D = \epsilon \mbfit E = \epsilon_r \epsilon_0 \mbfit E$\\
+%$\mbfit B = \mu \mbfit H = \mu_r \mu_0 \mbfit H$\\[.2cm]
+%\end{tabular*}
+\includegraphics[width=5cm]{FEMproblem}
+\end{columns}
+\centering
+%\hspace{-1cm} $\Downarrow$ \\
+%\hspace{-1cm}
+\begin{colorblock}{mycolor}{mycolor}{}
+\normalsize $$\mat{A} \ \vect{e}_p  = \vect{b}_p, \qquad 1 \leq p \leq P$$
+$$ \mat A \in \mathbb{C}^{N \times N}, \ \vect{b}_p, \vect{e}_p \in \mathbb{C}^{N \times 1}$$
+\end{colorblock}
+}
+
+
+\frame
+{
+\frametitle{Finite elements formulation: near fields}
+\begin{itemize}
+\item  $\vect{b}_p$  is related to $\mrm{\Gamma}^{p}_\mrm{WG}$ \ $\Rightarrow$ solutions for each feed port of the array are computed $\vect{e}_p  = \mat{A}^{-1} \ \vect{b}_p$. Then by \alert{superposition principle}:\\[.1cm]
+%\begin{center}
+\hspace{.1cm} 
+$\displaystyle \left[ e_1, \dots , e_N \right]^T = \vect e = \sum_{p=1}^P \vect{e}_p$ %\\[.2cm]
+\ \ \ \footnotesize  (expansion coefficients for $\tilde{\mbfit{E}}$) \normalsize
+%\end{center}
+\vspace{.2cm} \pause
+\item $\nabla \times {\mbfit{E}} =  -j\omega{\mbfit{B}}$ \ \ $\Rightarrow$ \ \ $\tilde{\mbfit H} = - \frac{1}{j \omega \mu} \nabla \times \tilde{\mbfit E}$ \vspace{.2cm} \pause
+\item Computational domain $\mrm {\Omega}_h$ is restricted to near fields...%, quindi del \alert{\itt{pattern} di radiazione} ?
+\end{itemize}
+}
+
+\subsection{Near field to far field transformation}
+\frame
+{
+\frametitle{Near field to far field transformation}
+\begin{itemize}
+\item \alert{Huygens' principle}: far field derived from near field $\tilde{\mbfit{E}}=\tilde{\mbfit{E}}(\mbfit{r'})$ e $\tilde{\mbfit{H}}=\tilde{\mbfit{H}}(\mbfit{r'})$, $\mbfit{r'} \in \mrm{\Gamma_R}$
+% dalle correnti equivalenti} ${\mbfit{J}}_s^{eq} = \hat{\mbfit{n}} \times \tilde{\mbfit{H}}$ e ${\mbfit{J}}_{ms}^{eq} = - \hat{\mbfit{n}} \times \tilde{\mbfit{E}}$ calcolate su $\mrm{\Gamma_R}$\\[.2cm]
+%\hspace{-.5cm}
+\begin{center}
+\vspace{-.5cm} \scriptsize $$\hspace{-.5cm}\check{\mbfit{E}}(\theta, \phi) = j \frac{\zeta_0 k_0}{4 \pi} \int \! \! \! \! \int_\mrm{\Gamma_R}  \mrm{e}^{jk_0 \hat{\mbfit{r}} \cdot \mbfit{r'}} \left [ - (\hat{\mbfit{n}} \times \tilde{\mbfit{H}})  + \left ( ( \hat{\mbfit{n}} \times \tilde{\mbfit{H}} ) \cdot \hat{\mbfit{r}} \right ) \hat{\mbfit{r}} + \frac{1}{\zeta_0} \ (\hat{\mbfit{n}} \times \tilde{\mbfit{E}})  \times \hat{\mbfit{r}} \right ]  d{\Gamma}$$ \vspace{-.2cm} \footnotesize $$ \hat{\mbfit{r}} = \hat{\mbfit{r}} \left ( \theta, \phi \right ) \textnormal{ unit vector in  the \alert{look angle direction}}$$ \vspace{-.5cm} $$\hat{\mbfit{n}} \textnormal{ normal on } \mrm{\Gamma_R} \textnormal{ outwardly directed from } \mrm{\Omega}_h $$
+\end{center} %  \\[.3cm] 
+%\vspace{.2cm} 
+\pause
+\item \normalsize \alert{Radiated field approximation}: $\check{\mbfit{H}}(\theta, \phi) =  \frac{1}{\zeta_0} \hat{\mbfit{r}} \times \check{\mbfit{E}}(\theta, \phi )$ \\ \pause % ci permette di trascurare il campo magnetico 
+%\vspace{.2cm}
+%\pause
+%\item \alert{Potenza radiata}: \vspace{-.2cm} $$\mrm{P}_\mrm{rad} = \frac{1}{2} \Re \left \{ \int_{\mrm{\Gamma_R}} \left [ \tilde{\mbfit{E}} \times \tilde{\mbfit{H}}^{*} \right ] \cdot \hat{\mbfit{n}} \ d\mrm{\Gamma} \right \}  = \mrm{P}_\mrm{in} - (\mrm{P}_\mrm{rifl} + \mrm{P}_\mrm{diss})$$ \\ \pause
+\item \alert{Radiation pattern}: \vspace{-.2cm}
+$$\mrm{G}_{\hat{\theta}} \left ( \theta, \phi \right ) = 4 \pi \frac{\left | {{\hat{\theta}}} \cdot \check{\mbfit E} (\theta, \phi) \right |^2}{ 2 \zeta_0 \mrm{P}_\mrm{acc}}, \ \mrm{G}_{\hat{\phi}} \left ( \theta, \phi \right ) = 4 \pi \frac{\left | {\hat{\phi}} \cdot \check{\mbfit E} (\theta , \phi ) \right |^2}{ 2 \zeta_0 \mrm{P}_\mrm{acc}}$$ \\[-.2cm]
+$$\mrm{G}_{tot} \left ( \theta, \phi \right )  = \mrm{G}_{\hat{\theta}} \left ( \theta, \phi \right ) + \mrm{G}_{\hat{\phi}} \left ( \theta, \phi \right ) $$
+\vspace{-.2cm} \footnotesize $$\mrm{P_{acc}} = \mrm{P_{inc}} - \mrm{P_{refl}}  \textnormal{: Accepted power at the feeding ports}$$ 
+\end{itemize}
+}
+
+\subsection{Linear time-invariant system}
+\frame
+{
+\frametitle{Radiation model: Input-State relation}
+\begin{itemize}
+\item $\mat{A} \ \vect{e}_p  = \vect{b}_p \times$  \alert{excitation phasors} for a constructive interference in the scan direction $(\theta_s,\phi_s)$: \vspace{-.2cm}
+$$\xi_p(\theta_s,\phi_s) = \mrm{e}^{-jk_0 ( x_p \sin(\theta_{s}) \cos(\phi_s) + y_p \sin(\theta_{s}) \sin(\phi_s) + z_p \cos(\theta_s) )}$$
+\begin{center}
+\footnotesize \vspace{-.3cm} $(x_p,y_p,z_p)$ position of $p^\text{th}$ antenna\\[.5cm] 
+\end{center} \pause
+\item \normalsize \alert{Input-State relation becomes parameterized in the scan direction $(\theta_s,\phi_s)$} \\
+\begin{colorblock}{mycolor}{mycolor}{}
+$$\mat{A} \ \vect{e} (\theta_s,\phi_s)  = \sum_{p=1}^{P} \xi_p(\theta_s,\phi_s) \ \vect{b}_p $$
+\end{colorblock}
+\end{itemize}
+%%\begin{center}
+%%\only<2>{\vspace{-.5cm} \includegraphics[width=4cm]{scanAngles}}
+%%\end{center}
+}
+
+%\frame
+%{
+%\frametitle{Modello di radiazione: relazione Ingresso-Stato}
+%\begin{itemize}
+%\item \normalsize \alert{Relazione Ingresso-Stato parametrizzata nella direzione di scansione $(\theta_s,\phi_s)$} \\ 
+%\begin{colorblock}{mycolor}{mycolor}{}
+%$$\mat{A} \ \vect{e} (\theta_s,\phi_s)  = \sum_{p=1}^{P} \xi_p(\theta_s,\phi_s) \ \vect{b}_p $$ %u(\theta_s,\phi_s)
+%\end{colorblock}
+%\end{itemize}
+%}
+
+\frame
+{
+\frametitle{Radiation model: State-Output relation}
+\begin{itemize}
+\item Integral relation between near field and radiated electric field \ $\Rightarrow$ \ \alert{operators on the near field} leading to radiated field in ${\hat{\theta}}$ and ${\hat{\phi}}$ polarizations \vspace{-.1cm} $$ \check{\mbfit E}_{\hat{\theta}} (\theta, \phi) = {\hat{\theta}} \cdot \check{\mbfit E} (\theta, \phi) = {\mathcal{L}}_{\hat{\theta}}(\tilde{\mbfit E}, \tilde{\mbfit H} ; \theta, \phi)$$ \\[-.6cm] $$ \check{\mbfit E}_{\hat{\phi}} (\theta, \phi) = {\hat{\phi}} \cdot \check{\mbfit E} (\theta, \phi) = {\mathcal{L}}_{\hat{\phi}}(\tilde{\mbfit E}, \tilde{\mbfit H} ; \theta, \phi)$$ \pause
+\vspace{-.5cm}
+%\item Per poter ridurre la complessit\acgrave{a} del sistema \ $\Rightarrow$ \ forma parametrizzata della relazione di Stato-Uscita \pause
+\item Operators expressed in \alert{2D Fourier series}\\[-.6cm]
+$$\hspace{-.8cm} \mathcal{L}_{\{ {\hat{\theta}},{\hat{\phi}} \}}(\tilde{\mbfit E}, \tilde{\mbfit H}; \theta, \phi) = \sum_{q_\theta=-\infty}^{\infty} \sum_{q_\phi=-\infty}^{\infty} k_{q_\theta q_\phi \{{\hat{\theta}},{\hat{\phi}} \}} (\tilde{\mbfit E}, \tilde{\mbfit H}) \ \eta_{q_\theta q_\phi}(\theta,\phi)$$
+\vspace{-.2cm} $$\displaystyle \eta_{q_\theta q_\phi}(\theta,\phi) = \mrm{e}^{j \left(q_\theta \theta + q_\phi \phi \right)}, \quad q_\theta, q_\phi \in \mathbb{Z}$$
+\end{itemize}
+}
+
+\frame
+{
+\frametitle{Radiation model: State-Output relation}
+\centering
+\vspace{-.1cm}
+\includegraphics[width=6.5cm]{dft2spectrum}
+\begin{itemize}
+\item Narrow bandwidth operators \ $\Rightarrow$ \ \alert{ 2D-DFT truncation}: 
+\end{itemize}
+\footnotesize $$ \hspace{-.6cm} {\mathcal{L}}_{ \{\hat{\theta},\hat{\phi}\} }(\tilde{\mbfit{E}}, \tilde{\mbfit{H}}; \theta, \phi) \approx \tilde{\mathcal{L}}_{\{ {\hat{\theta}},{\hat{\phi}} \}} (\tilde{\mbfit E}, \tilde{\mbfit H}; \theta, \phi) = \sum_{q_\theta=-Q_\theta}^{Q_\theta}\sum_{q_\phi=-Q_\phi}^{Q_\phi} k_{{q_\theta q_\phi} \{ {\hat{\theta}},{\hat{\phi}} \}} (\tilde{\mbfit E}, \tilde{\mbfit H}) \ \eta_{q_\theta q_\phi}(\theta,\phi)$$
+
+}
+
+\frame
+{
+\frametitle{Radiation model: State-Output relation}
+\begin{itemize}
+\item $\qquad \qquad \tilde{\mbfit E} = \mathcal{F}_{\tilde{\mbfit E}}( \vect e (\theta_s,\phi_s))$, $\tilde{\mbfit H} = \mathcal{F}_{\tilde{\mbfit H}}( \vect e (\theta_s,\phi_s))$ su $\mrm{\Gamma_R}$\\[-.4cm] $$\Downarrow$$ \\[-.8cm]
+%\footnotesize
+$$ \check{\mbfit E}_{\{ {\hat{\theta}},{\hat{\phi}} \}} (\theta, \phi) \approx \tilde{\mathcal{L}}_{\{ {\hat{\theta}},{\hat{\phi}} \}} \left ( \mathcal{F}_{\tilde{\mbfit E}}( \vect e (\theta_s,\phi_s)), \mathcal{F}_{\tilde{\mbfit H}}( {\vect e} (\theta_s,\phi_s)) ; \theta, \phi \right ) $$ \pause
+%\item \itt{DFT-truncation} (${\mathcal{L}}_\theta \approx \tilde{\mathcal{L}}_\theta$, ${\mathcal{L}}_\phi \approx \tilde{\mathcal{L}}_\phi$) $\Rightarrow$
+%\normalsize
+\item \alert{State-Output relation parameterized in the look direction $(\theta, \phi)$}\\
+\begin{colorblock}{mycolor}{mycolor}{}
+$$ \check{\mbfit E}_{\{ {\hat{\theta}},{\hat{\phi}} \}}(\theta, \phi) =  \left ( \sum_{q_\theta=-Q_\theta}^{Q_\theta} \sum_{q_\phi=-Q_\phi}^{Q_\phi} \eta_{q_\theta q_\phi}(\theta,\phi) \ \vect{c}^H_{{q_\theta q_\phi} \{ {\hat{\theta}},{\hat{\phi}} \}} \right ) \ \vect{e} (\theta_s,\phi_s)$$
+$$\vect{c}_{{q_\theta q_\phi} \{ {\hat{\theta}},{\hat{\phi}} \}} \in \mathbb{C}^{N \times 1}$$
+\end{colorblock}
+\end{itemize}
+}
+
+\frame
+{
+\frametitle{Full Input-State-Output system}
+\includegraphics[width=\textwidth]{FullRadModel}
+}
+
+\subsection{Model order reduction}
+\frame
+{
+\frametitle{Full Input-State-Output system: projection}
+\includegraphics[width=\textwidth]{ROMproj}
+$$\small \mat{V} \in \mathbb{C}^{N \times n}, \ n \ll N$$
+}
+
+
+\frame
+{
+\frametitle{Reduced Input-State-Output system}
+\centering
+\begin{center}
+\includegraphics[width=0.6\textwidth]{ROM}
+\end{center}
+%\begin{center}
+%\vspace{-.7cm}
+%\begin{eqnarray*}
+%\label{eq:ROMSISO}
+%\tilde{\mat{A}} \ \tilde{\vect{e}} (\theta_s,\phi_s) & = & \sum_{p=1}^{P} %\xi_p(\theta_s,\phi_s) \ \tilde{\vect{b}}_p  \\ %u(\theta_s,\phi_s) \\
+% \check{\mbfit E}_{\{\theta,\phi\}}(\theta, \phi) & = & \left ( %\sum_{q=-Q}^{Q} \eta_q(\theta) \ \tilde{\vect{c}}^H_{q\{\theta,\phi\}}(\phi %|_\mrm{cost}) \right ) \ \tilde{\vect{e}} (\theta_s,\phi_s) \\
+%\vect{z}(\theta_s,\phi_s) &= & \tilde{\mat F} \ \tilde{\vect{e}} %(\theta_s,\phi_s)
+%\end{eqnarray*} con
+%\begin{eqnarray*}
+%\label{eq:ProjectedSISO}
+%\tilde{\mat{A}} & := & \mat{W}^H \ \mat{A} \ \mat{V} \\
+%\tilde{\vect{b}}_p & := & \mat{W}^H \ \vect{b}_p \\
+%\tilde{\vect{c}}_{q\{\theta,\phi\}} & := & \mat{V}^H \ %\vect{c}_{q\{\theta,\phi\}} \\
+%\tilde{\mat{F}}& := & \mat{F} \ \mat{V}
+%\end{eqnarray*} e $\mat{W}, \mat{V} \in \mathbb{C}^{N \times n}, \ n \ll N$
+%\end{center}
+}
+
+\frame{
+\frametitle{Projection space}
+\begin{itemize}
+\item $\mat V$ constitutes an \alert{expansion basis} for the solution vector  $\tilde{\vect e}(\theta_s,\phi_s)$: $\vect e(\theta_s,\phi_s) \approx \mat V \tilde{\vect e}(\theta_s,\phi_s)$ $\Rightarrow$ \alert{ $\mat V$ must keep information on the near field variations due to beam steering} \\ \pause 
+%\item $\mat W$ costituisce uno \alert{spazio di \itt{test}} per la relazione Ingresso-Stato \pause
+%\pause
+%\begin{itemize}
+\item \alert{Collection of $\alpha$ solutions} linearly independent for the scan directions $(\theta_{s_i}, \phi_{s_i})$, $1 \leq i \leq \alpha$ $\Rightarrow$ \alert{orthonormalization} $\Rightarrow$ $\mat V$
+%$$\mrm{span} \ \left \{ \bigcup_{i=1}^\alpha  \ \vect{e}_i(\theta_{s_i}, \phi_{s_i}) \right \} \subseteq \colspan{\mat V}$$\\ \pause
+%\item Proiezione di Galerkin: $\mat W = \mat V$ $\Rightarrow$ \itt{matching} negli direzioni di scansione selezionati $(\theta_{s_i}, \phi_{s_i})$ 
+%\item Emisfero settentrionale \ $\Rightarrow$ \ $\theta_{s_i}, \phi_{s_i} \in [-90\°,90\°]$ \\ 
+\pause
+\item The \alert{model order reduction error} is computed as relative error induced to the pattern in $\mathcal{L}^2$:
+$$\varepsilon = \frac{\| \mrm{G}_{{tot}_{full}} - \mrm{G}_{{tot}_{reduced}} \|_2}{\| \mrm{G}_{{tot}_{full}} \|_2}$$
+\end{itemize}
+}
+
+%\frame{
+%\frametitle{Analisi del campo vicino in \textbf{scansione lineare} - campo scalare $\psi$}
+%\begin{itemize}
+%\item $\displaystyle \mrm{span} \ \left \{ \bigcup_{i=1}^\alpha  \ \mbfit{\psi}_i(\theta_{s_i}, \phi_{s_i}) \right \} \subseteq \colspan{\mat V}, \ \alpha = 1, 2, 3, \ldots$ \pause
+%\item Proiezione di $\mbfit{\psi}_t(\theta_{s_t},\phi_{s_t}) \neq \mbfit{\psi}_i(\theta_{s_i},\phi_{s_i}), 1 \leq i \leq \alpha$ nel sottospazio espanso da $\mat V$:\\ \vspace{-.4cm} $$\tilde{\mbfit{\psi}}_t = \mat{V} \mat{V}^H \mbfit{\psi}_t $$\\[-.6cm] \pause
+%\item Valutazione dell'\alert{errore di approssimazione} (norma $\mathcal{L}^2$):\vspace{-.2cm} $$\color{blue} \varepsilon_\mrm{vicino} \color{black} = \frac{\|\mbfit{\psi}_t - \tilde{\mbfit{\psi}}_t \|_2}{\| \mbfit{\psi}_t \|_2}$$ \\[-.9cm]
+%$$\color{red}  \varepsilon_\mrm{trasformato} \color{black} = \frac{\|\check{\mbfit{\psi}}_{t_\mrm{trasf.}} - \tilde{\check{\mbfit{\psi}}}_t \|_2}{\| \check{\mbfit{\psi}}_{t_\mrm{trasf.}} \|_2}$$ \\[-.7cm]
+%$$\color{black} \varepsilon_\mrm{diretto}  = \frac{\| \check{\mbfit{\psi}}_{t_\mrm{dir.}} - \tilde{\check{\mbfit{\psi}}}_t \|_2}{\| \check{\mbfit{\psi}}_{t_\mrm{dir.}} \|_2}$$
+%\end{itemize}
+%}
+
+%\frame{
+%\frametitle{Analisi del campo vicino in \textbf{scansione lineare} - campo scalare $\psi$}
+%\begin{center}
+%\vspace{-.4cm}
+%Array lineare di 17 sorgenti puntiformi disposte lungo $x$\\
+%$\theta_{s_i} \in \{0\°, 90\°, 45\°, 22.5\°, 67.5\°, \ldots \}, \ \phi_{s_i} = 0\°, \ 1 \leq i \leq \alpha$
+%\end{center}
+%\vspace{.2cm}
+%\hspace{-.5cm}\alert{$\Delta x = \nicefrac{\lambda}{4}$}\\[.3cm]
+%\scriptsize{\hspace{-.5cm}Risoluzione nel \\\hspace{-.7cm} campionamento \\
+%\hspace{-.6cm} di $\psi \approx \nicefrac{\lambda}{10}$}
+%\begin{center}
+%\vspace{-2.005cm}
+%\includegraphics[width=7.5cm]{SVDerrorExp_33_0,25}
+%\end{center}
+%\begin{pgfpicture}{0cm}{0cm}{0cm}{0cm}
+% \pgfsetlinewidth{.75pt}%
+% \pgfsetendarrow{\pgfarrowtriangle{2pt}}%
+% \pgfline{\pgfxy(1.5,4.88)}{\pgfxy(2.7,4.88)}
+%\end{pgfpicture}
+%}
+
+%\frame{
+%\frametitle{Analisi del campo vicino in \textbf{scansione lineare} - campo scalare $\psi$ }
+%\begin{center}
+%\vspace{-.4cm}
+%Array lineare di 17 sorgenti puntiformi disposte lungo $x$\\
+%$\theta_{s_i} \in \{0\°, 90\°, 45\°, 22.5\°, 67.5\°, \ldots \}, \ \phi_{s_i} = 0\°, \ 1 \leq i \leq \alpha$
+%\end{center}
+%\vspace{.2cm}
+%\hspace{-.5cm}\alert{$\Delta x = \nicefrac{\lambda}{2}$}\\[.3cm]
+%\begin{center}
+%\vspace{-.8cm}
+%\includegraphics[width=7.5cm]{SVDerrorExp_33_0,5}
+%\end{center}
+%}
+
+%\frame{
+%\frametitle{Analisi del campo vicino in \textbf{scansione lineare} - campo scalare $\psi$}
+%\begin{center}
+%\vspace{-.4cm}
+%\only<2>{\vspace{-.337cm}}
+%Array lineare di 17 sorgenti puntiformi disposte lungo $x$\\
+%$\theta_{s_i} \in \{0\°, 90\°, 45\°, 22.5\°, 67.5\°, \ldots \}, \ \phi_{s_i} = 0\°, \ 1 \leq i \leq \alpha$
+%\end{center}
+%\vspace{.2cm}
+%\only<2>{\vspace{-.2cm}}
+%\hspace{-.5cm}\alert{$\Delta x = \nicefrac{3 \lambda}{4}$}\\[.3cm]
+%\begin{center}
+%\vspace{-.8cm}
+%\vspace{-.8cm}
+%\includegraphics[width=7.5cm]{SVDerrorExp_33_0,75}
+%\only<1>{\includegraphics[width=7.5cm]{SVDerrorExp_33_0,75}}
+%\only<2>{\includegraphics[width=5.5cm]{SVDerrorExp_33_0,75}}
+%\end{center}
+%\pause
+%\begin{itemize}
+%\only<2>{
+%\begin{colorblock}{mycolor}{mycolor}{}
+%\vspace{-.5cm}
+%$\alpha$ in \alert{scansione lineare} dipende dal \alert{numero di elementi radianti} (rango del sottospazio di scansione) e dalle loro \alert{distanze relative}% pause
+%\end{colorblock}
+%}
+%}
+
+%\frame{
+%\frametitle{Analisi del campo vicino in scansione lineare - campo scalare $\psi$}
+%\begin{center}
+%\vspace{-.4cm}
+%\only<2>{\vspace{-.45cm}}
+%Array lineare di 17 sorgenti puntiformi disposte lungo $x$\\
+%$\theta_{s_i} \in \{0\°, 90\°, 45\°, 22.5\°, 67.5\°, \ldots \}, \ \phi_{s_i} = 0\°, \ 1 \leq i \leq \alpha$
+%\end{center}
+%\vspace{.2cm}
+%\only<2>{\vspace{-.2cm}}
+%\hspace{-.5cm}$\Delta x = \lambda$\\[.3cm]
+%\begin{center}
+%\only<1>{\vspace{-.704cm}\includegraphics[width=7.5cm]{SVDerrorExp_33_0,75}}
+%\only<2>{\vspace{-.904cm}\includegraphics[width=5.5cm]{SVDerrorExp_33_0,75}}
+%\end{center}
+%\pause
+%\begin{itemize}
+%\only<2>{
+%\begin{colorblock}{mycolor}{mycolor}{}
+%\vspace{-.5cm}
+%$\alpha$ in scansione lineare dipende dal \alert{numero di elementi radianti} (rango del sottospazio di scansione) e dalle loro \alert{distanze relative} \pause
+%\end{colorblock}
+%}
+%}
+
+%\frame{
+%\frametitle{Analisi del campo vicino in \textbf{scansione planare} - campo scalare $\psi$}
+%\begin{center}
+%\vspace{-.2cm}
+%Array planare di 3x5 sorgenti puntiformi equispaziate di $\nicefrac{\lambda}{2}$ \\[-.5cm]
+%\end{center}
+%\begin{itemize}
+%\item $(\theta_{s_i},\phi_{s_i})$ da scansioni lineari lungo $x$ e $y$ \\[.4cm] 
+%\begin{columns}[cc]
+%\column{6cm}
+%\includegraphics[width=5cm]{sel3x5angles}
+%\column{4cm}
+%$\color{red} \varepsilon_\mrm{trasformato} \color{black} \approx 0.5$
+%\end{columns} 
+%\end{itemize}
+%}
+
+%\frame{
+%\frametitle{Analisi del campo vicino in \textbf{scansione planare} - campo scalare $\psi$}
+%\begin{center}
+%\vspace{-.2cm}
+%\only<1>{\vspace{-.16cm}}
+%\only<2>{\vspace{-.29cm}}
+%\only<3>{\vspace{-.37cm}}
+%Array planare di 3x5 sorgenti puntiformi equispaziate di $\nicefrac{\lambda}{2}$ \\[.4cm]
+%\only<1>{\vspace{-.2cm}}
+%\end{center}
+%\begin{itemize}
+
+%\begin{center}
+%\only<1>{\begin{itemize}
+%\item $(\theta_{s_i},\phi_{s_i})$ su traiettoria spirale elicoidale per l'emisfero nord \\[.1cm]
+%\end{itemize}}
+%\only<1>{\includegraphics[width=6cm]{traj}}
+%\only<2>{\includegraphics[width=7cm]{spirHelErrorSVD}}
+%\only<3>{\includegraphics[width=7.75cm]{spirHeltraj17}}
+%\end{center} 
+%\end{itemize}
+
+%}
+
+%\frame{
+
+%\begin{itemize}
+%\item $\mat W$ costituisce uno \alert{spazio di \itt{test}} per la relazione Ingresso-Stato \\[.2cm] \pause
+%\item Proiezione di Galerkin $\mat W = \mat V$ mantiene il \itt{matching} negli direzioni di scansione selezionati $(\theta_{s_i}, \phi_{s_i})$ %\pause
+%\item Proiezione Petrov-Galerkin $\mat W :$ $$\mrm{span} \ \left \{ \bigcup_{i=1}^\alpha  \ \vect{z}_i(\theta_{i}, \phi_{i}) \right \} \subseteq \colspan{\mat W}$$ con $\vect{z}_i$ soluzioni del \alert{problema duale} $$\mat{A}^H \ \vect z(\theta, \phi) = \sum_{q=-Q}^Q \Omega_q(\theta) \mat{c}_q(\phi) $$ oltre al \itt{matching} negli direzioni di scansione (globale) assicura anche il \itt{matching} negli angoli di osservazione selezionati $(\theta_{i}, \phi_{i})$ (locale) $\Rightarrow$  \alert{Ulteriori $\alpha$ soluzioni da calcolare}
+%\end{itemize}
+%}
+%\frame{
+%\frametitle{Misura dell'errore indotto sul \itt{pattern}}
+%\begin{itemize}
+%\item 
+%\item 
+%\item 
+
+%\end{itemize}
+%}
+
+\section{Numerical experiment}
+\subsection{3x5 patch antennas}
+
+\frame
+{
+  \frametitle{HFSS design of a 3x5 patch antennas array}
+	\begin{center}
+\only<1-2>{\vspace{-1cm}}
+\only<2>{\vspace{-.235cm}}
+\only<3>{\vspace{-1.235cm}}
+		$f$ = 2.35 GHz, $\ \Delta x = \Delta y = \nicefrac{\lambda_0}{2}$ \\[.5cm]
+\only<1>{\vspace{.2cm}}
+		\only<1>{\includegraphics[width=8cm]{HFSS3x5array}}
+		%\only<2>{\includegraphics[width=8cm]{HFSS3x5arraySMPL}\\
+%1100 campioni $\tilde{\mbfit E}, \tilde{\mbfit H}$ su $\mrm{\Gamma_R}$, risoluzione $\nicefrac{\lambda_0}{10}$
+%}
+		\only<2>{ 
+\vspace{.4cm}
+\begin{columns}[cc]
+\column{7cm}
+\includegraphics[width=7cm]{HFSS3x5MeshFull}
+\column{5cm}
+\begin{itemize}
+\item First order Nedelec basis functions\\
+\item \itt{h}-adaptive tetrahedral mesh ($h_\mrm{max}\approx\nicefrac{\lambda}{10}$)
+\end{itemize}
+\end{columns}
+}
+		\only<3>{
+\vspace{.4cm}
+\begin{columns}[cc]
+\column{7cm}
+\includegraphics[width=7cm]{HFSS3x5Mesh}
+\column{5cm}
+\begin{itemize}
+\item First order Nedelec basis functions\\
+\item \itt{h}-adaptive tetrahedral mesh ($h_\mrm{max}\approx\nicefrac{\lambda}{10}$)
+\end{itemize}
+\end{columns}
+}
+	\end{center}
+}
+\frame{
+\only<1>{\frametitle{Broadside pattern ($\theta_s$=0\°,$\phi_s$=0\°): HFSS}}
+\only<2>{\frametitle{Broadside pattern ($\theta_s$=0\°,$\phi_s$=0\°): Present code}}
+\begin{center}
+\only<1> {\includegraphics[width=8cm]{HFSS3x5pattern}\\
+\footnotesize
+\begin{itemize}
+\item 358'\! 648 DoFs
+\item Memory requirements: \alert{$\approx$ 1.5 GB}
+\item Computation time \alert{$\approx$ 38 min}
+\item Pattern computation on $\phi=0\°$ and $\phi=90\°$ cut-planes demands \alert{$\approx$ 35 s}
+\end{itemize}
+}
+\only<2> {
+\begin{columns}[cc]
+\column{5cm}
+\includegraphics[width=5cm]{patchPatternBSnearABC} 
+\column{7cm}
+%\begin{center}
+\footnotesize Mesh and material characteristics are extracted from the previous HFSS project \normalsize \\[.3cm]
+%\end{center} 
+\begin{itemize}
+\item 358'\! 648 DoFs
+\item 1100 $\tilde{\mbfit E}, \tilde{\mbfit H}$ sampling points on $\mrm{\Gamma_R}$, $\nicefrac{\lambda_0}{10}$ resolution
+\item $25 \times 25$ 2D-DFT coefficients %($\color{red}\varepsilon_\mrm{trasformato} \color{black} \approx 10^{-4}$)
+%(errore ininfluente sulla trasformazione da campi vicini a campi lontano)
+%\item 60 piani a $\phi$ costante per una risoluzione azimutale di $\Delta \phi = 3\°$
+\end{itemize}
+\end{columns}
+\footnotesize
+\begin{itemize}
+\item Memory required by the full radiation model: \alert{$\approx$ 625 MB} 
+\item Computation timings: \Big \{ \begin{tabular*}{5cm}[h]{l}
+Matrices assembly: \alert{$\approx 20$ min}\\
+Input system solution: \alert{$\approx 25$ min}
+\end{tabular*}
+\item Parameterization $\Rightarrow$ pattern computation on $\phi=0\°$ e $\phi=90\°$ cut demands \alert{150 ms} (233 times faster than HFSS)
+\end{itemize}
+}
+\end{center}
+}
+\frame
+{
+  \frametitle{Model reduction for beam steering in the XZ plane}
+\begin{itemize}
+\item $\alpha$ scan directions $(\theta_{s_i} \in \{ 0\°, 90\°, 45\°, 22.5\°, 67.5\°,\ldots \}, \phi_{s_i}=0\°)$
+\end{itemize}
+\begin{center}
+\includegraphics[width=7cm]{errorXZ}
+\end{center}
+}
+\frame
+{
+  \frametitle{Model reduction for beam steering in the YZ plane}
+\begin{itemize}
+\item $\alpha$ scan directions $(\theta_{s_i} \in \{ 0\°, 90\°, 45\°, 22.5\°, 67.5\°,\ldots \}, \phi_{s_i}=90\°)$
+\end{itemize}
+\begin{center}
+\includegraphics[width=7cm]{errorYZ}
+\end{center}
+}
+\frame
+{
+  \frametitle{Model reduction for beam steering in the wholeg space}
+	%\begin{itemize}
+%\item Proiezione Galerkin $\mat V = \mat W$ con $(\theta_{s_i},\phi_{s_i})$ su traiettoria spirale elicoidale per l'emisfero nord \\[.2cm] %\includegraphics[width=5cm]{traj} 
+%\pause
+\begin{center}
+\only<1>{\begin{itemize}
+\item $\alpha$ scan directions $(\theta_{s_i},\phi_{s_i})$ individuated by equally spaced points on a spiraling helicoidal trajectory for the northern hemisphere\\[.1cm]
+\end{itemize}}
+\only<1>{\includegraphics[width=6cm]{traj}}
+\only<2>{\includegraphics[width=7cm]{spirHelErrorSVD}}
+\only<3>{\includegraphics[width=7.75cm]{spirHeltraj17}}
+\end{center}
+}
+\frame{
+\frametitle{Model reduction for beam steering in the whole space}
+\begin{itemize}
+\item $\alpha$ = 15 (n$\mrm{^o}$ of antennas)
+\begin{itemize}
+\item N$\mrm{^o}$ of DoFs: \alert{358'\! 648 $\rightarrow$ 15}
+\item Memory usage: \alert{625 MB $\rightarrow$ 1.5 MB}
+\item Model order reduction error: \alert{$\varepsilon \leq 10^{-11}$}
+\item 2D-DFT truncation error: \alert{$\varepsilon_\text{n2f} \leq 10^{-4}$}\\ $\rightarrow \ \approx 0.01$ dB maximum pattern error
+\end{itemize}
+\end{itemize}
+}
+
+\frame
+{
+\vspace{-.1cm}
+\begin{center}
+\movie[width=8cm,height=6cm, poster]{}{MovScan.avi} \\
+\footnotesize 
+$\Delta \theta = 0.12 \°, \Delta \phi = 3 \° $
+\end{center}
+%\pause
+\vspace{-.1cm}
+%\begin{center}
+\begin{columns}
+\scriptsize \hspace{.5cm}
+\column{7cm}
+Frame computation time with the given resolution: \\[-.1cm]
+\begin{itemize} 
+\item for \alert{HFSS}: \alert{7 min 10 s}
+\item \vspace{-.1cm} for the \alert{full} parameterized model: \alert{520 ms}
+\item \vspace{-.1cm} for the \alert{reduced} parameterized model: \alert{63 ms}
+\end{itemize}
+\column{.5cm}
+\vspace{-.8cm} $\Rightarrow$ \hspace{.5cm}
+\column{4cm}
+Whole movie: \\[-.1cm]
+\begin{itemize}
+\item \alert{10 h 20 min}
+\item \vspace{-.1cm} \alert{$\approx$ 1 min 3 s}
+\item \vspace{-.1cm} \alert{$\approx$ 8 s}
+\end{itemize}
+\end{columns}
+%\end{center}
+}
+
+%\subsection{40 antenne Vivaldi in doppia polarizzazione}
+%\frame{
+%\frametitle{}
+\subsection{Conclusions}
+
+\frame{
+
+\frametitle{Conclusions}
+\begin{itemize}
+\item Promising technique for the analysis of large phased arrays %\pause
+\item Further parameterization in the frequency ($k_0$) and material characteristics ($\dyad{\epsilon}_r, \ \dyad{\mu}_r$) $\Rightarrow$ Working bandwidth and fabrication tolerances%\pause
+\item Optimization of pattern shape relying on accurately computed patterns
+\end{itemize}
+}
+
+%\frame{
+%\Large
+%\begin{center}
+%Thank you for paying attention...\\
+%Any questions?
+%\end{center}
+%}
+
+
+%}
+
+
+\end{document}

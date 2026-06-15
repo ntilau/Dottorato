@@ -1,0 +1,18 @@
+to Author:
+
+The paper presents and improved accuracy in DOA estimation with a modified ESPRIT  algorithm by using the Cholesky factorization of the autocorrelation matrices (positive definite as they represent active power), instead of the classic eigenvalue decomposition, with a so-called "CDBA" method.
+
+Some major remarks are to be stated:
+- the chosen array geometry, with equal spacing between element and between array 
+doublets implies that the number of effective array elements is of M+1 instead of 2M. 
+Author should explain what is actually done. What appens if the doublets relative 
+distance is different from d?
+- a validation of ESPRIT implementation (and which version?) is missing and timing comparisons between the 2 techniques should be presented. To assess the Cholesky decomposition DOA estimation enhancements, Author should add more test cases compairing timings or mathematicaly demonstrate the increase in accuracy.
+- it is not clear how the references come into play in the paper. Author should also specify where the ESPRIT algorithm specifications can be retrieved.
+
+minor remarks:
+- sentence in Section I "If the AOA estimates were not estimated accurately, then wireless devices will not be located accurately or the received signal bit error rate will be high" should read "would" instead of "will".
+- sentence "...  respectively, the following equation can be deuced:" should read "deduced" instead of "deuced"
+- sentence "Note that the decomposition performed in third and fifth step is performed on a M × M matrix. Whereas, in the ESPRIT algorithm, the decomposition will be performed on a 2M × 2M matrix for the same system setup." should read "Note that the decomposition performed in third and ?fth step is performed on a M × M matrix, whereas, in the ESPRIT algorithm, the decomposition is performed on a 2M × 2M matrix for the same system setup."
+- the \beta_k(i) set should be discrete and written ad {-1,1}.
+- results for W=1000 are missing in Fig. 1
